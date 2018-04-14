@@ -18,6 +18,7 @@ public class Constants {
     public final static int _FRAG_ACCOUNT_PROFILE_PICS = 3;
     public final static int _FRAG_ACCOUNT_GALLERY = 4;
     public final static int _FRAG_USER_PRESTATION = 5;
+    public final static int FRAG_Maps = 6;
 
 
     //STARTACTIVITYFORRESULT -->HomeActivity
@@ -28,5 +29,9 @@ public class Constants {
     public final static int _PASSWORD_REQUEST = 2;
 
     //public static final String _URL_WEBSERVICE =  "http://10.75.25.138:8080/serviceweb/";
-    public static final String _URL_WEBSERVICE =  "http://10.75.25.123:8080/serviceweb/";
+
+    // public static final String _URL_WEBSERVICE =  "http://10.75.25.123:8080/proxiservices/";
+
+    //connexion hors afpa
+    public static final String _URL_WEBSERVICE =  "http://192.168.1.87/proxiservices/";
 }

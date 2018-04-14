@@ -8,6 +8,11 @@
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
     <item
+        android:id="@+id/action_maps"
+        android:icon="@drawable/ic_action_carte"
+        android:title="Quartier"
+        app:showAsAction="always" ></item>
+    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" ></item>

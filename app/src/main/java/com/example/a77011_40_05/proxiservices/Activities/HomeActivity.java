@@ -24,6 +24,7 @@ import com.example.a77011_40_05.proxiservices.Fragments.AccountFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountGalleryFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountProfilePicsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.UserPrestationFragment;
 import com.example.a77011_40_05.proxiservices.R;
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity
     AccountProfilePicsFragment accountProfilePicsFragment = null;
     AccountGalleryFragment accountGalleryFragment = null;
     UserPrestationFragment userPrestationFragment = null;
+    MapsFragment mapsFragment=null;
 
     TextView txtHeaderName;
     ImageView imgProfilePics;
@@ -112,11 +114,15 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            changeFragment(Constants._FRAG_SETTINGS,null);
-            return true;
-        }
+            changeFragment(Constants._FRAG_SETTINGS, null);
+        }  else if(id == R.id.action_maps)
+            {
+                /*Intent intent=new Intent(HomeActivity.this,MapsActivity.class);
+                startActivityForResult(intent, 1);// Activity is started with requestCode 2*/
+                changeFragment(Constants.FRAG_Maps, null);
+            }
 
-        return super.onOptionsItemSelected(item);
+       return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -205,6 +211,12 @@ public class HomeActivity extends AppCompatActivity
                     accountProfilePicsFragment = new AccountProfilePicsFragment();
                 }
                 frag = accountProfilePicsFragment;
+                break;
+            case Constants.FRAG_Maps:
+                if(mapsFragment == null){
+                    mapsFragment = new MapsFragment();
+                }
+                frag = mapsFragment;
                 break;
             case Constants._FRAG_ACCOUNT_GALLERY:
                 if(accountGalleryFragment == null){
