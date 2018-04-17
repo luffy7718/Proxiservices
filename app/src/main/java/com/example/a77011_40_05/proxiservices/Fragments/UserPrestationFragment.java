@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Entities.User;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
 import com.example.a77011_40_05.proxiservices.R;
@@ -32,7 +32,7 @@ public class UserPrestationFragment extends Fragment {
     RecyclerView rvwUserPrestationFragment;
     ListView lswUserPrestation;
     Context context;
-    Prestations prestations;
+    CategoriesPrestations categoriesPrestations;
     int idPrestation;
 
     public UserPrestationFragment() {

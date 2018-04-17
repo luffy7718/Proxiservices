@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a77011_40_05.proxiservices.Entities.Prestation;
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
+import com.example.a77011_40_05.proxiservices.Entities.CategoryPrestation;
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Holders.PrestationHolder;
 import com.example.a77011_40_05.proxiservices.R;
 
@@ -19,16 +19,16 @@ import com.example.a77011_40_05.proxiservices.R;
 
 public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
 
-    Prestations prestations;
+    CategoriesPrestations categoriesPrestations;
     Context context;
     Activity activity = null;
-    public PrestationAdapter(Prestations prestations,Context context) {
-        this.prestations = prestations;
+    public PrestationAdapter(CategoriesPrestations categoriesPrestations, Context context) {
+        this.categoriesPrestations = categoriesPrestations;
         this.context = context;
     }
 
-    public PrestationAdapter(Prestations prestations, Context context, Activity activity) {
-        this.prestations = prestations;
+    public PrestationAdapter(CategoriesPrestations categoriesPrestations, Context context, Activity activity) {
+        this.categoriesPrestations = categoriesPrestations;
         this.context = context;
         this.activity = activity;
     }
@@ -43,13 +43,13 @@ public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
 
     @Override
     public void onBindViewHolder(PrestationHolder holder, int position) {
-        Prestation prestation = prestations.get(position);
-        holder.setPrestation(prestation,context,activity);
+        CategoryPrestation categoryPrestation = categoriesPrestations.get(position);
+        holder.setPrestation(categoryPrestation,context,activity);
 
     }
 
     @Override
     public int getItemCount() {
-        return prestations.size();
+        return categoriesPrestations.size();
     }
 }

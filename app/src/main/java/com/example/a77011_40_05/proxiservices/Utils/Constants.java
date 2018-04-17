@@ -28,5 +28,6 @@ public class Constants {
     public final static int _PASSWORD_REQUEST = 2;
 
     //public static final String _URL_WEBSERVICE =  "http://10.75.25.138:8080/serviceweb/";
-    public static final String _URL_WEBSERVICE =  "http://10.75.25.123:8080/serviceweb/";
+    //public static final String _URL_WEBSERVICE =  "http://10.75.25.103:8080/serviceweb/";
+    public static final String _URL_WEBSERVICE =  "http://10.75.25.103:8080/proxiservices/";
 }

@@ -3,7 +3,7 @@ package com.example.a77011_40_05.proxiservices.Utils;
 import android.app.Application;
 import android.content.res.Configuration;
 
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
 
 /**
@@ -13,7 +13,7 @@ import com.example.a77011_40_05.proxiservices.Entities.Users;
 public class App extends Application {
 
     private static Users users;
-    private static Prestations prestations;
+    private static CategoriesPrestations categoriesPrestations;
 
     public static Users getUsers() {
         return users;
@@ -23,12 +23,12 @@ public class App extends Application {
         App.users = users;
     }
 
-    public static Prestations getPrestations() {
-        return prestations;
+    public static CategoriesPrestations getCategoriesPrestations() {
+        return categoriesPrestations;
     }
 
-    public static void setPrestations(Prestations prestations) {
-        App.prestations = prestations;
+    public static void setCategoriesPrestations(CategoriesPrestations categoriesPrestations) {
+        App.categoriesPrestations = categoriesPrestations;
     }
 
     // Called when the application is starting, before any other application objects have been created.

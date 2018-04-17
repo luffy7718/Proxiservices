@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
-import com.example.a77011_40_05.proxiservices.Entities.Prestation;
+import com.example.a77011_40_05.proxiservices.Entities.CategoryPrestation;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 
@@ -29,9 +29,9 @@ public class PrestationHolder extends RecyclerView.ViewHolder {
         imgPresta = (ImageView) view.findViewById(R.id.imgPresta);
     }
 
-    public void setPrestation(final Prestation prestation, final Context context, final Activity activity){
-        txtName.setText(prestation.getName());
-        int ressourceImage = context.getResources().getIdentifier(prestation.getImgName(),"drawable",context.getPackageName());
+    public void setPrestation(final CategoryPrestation categoryPrestation, final Context context, final Activity activity){
+        txtName.setText(categoryPrestation.getName());
+        int ressourceImage = context.getResources().getIdentifier(categoryPrestation.getImgName(),"drawable",context.getPackageName());
         imgPresta.setImageResource(ressourceImage);
         imgPresta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +39,7 @@ public class PrestationHolder extends RecyclerView.ViewHolder {
                 if(activity !=null){
                     HomeActivity home = (HomeActivity) activity;
                     Bundle params = new Bundle();
-                    params.putInt("idPrestation", prestation.getId());
+                    params.putInt("idPrestation", categoryPrestation.getId());
                     home.changeFragment(Constants._FRAG_USER_PRESTATION,params);
                 }
             }

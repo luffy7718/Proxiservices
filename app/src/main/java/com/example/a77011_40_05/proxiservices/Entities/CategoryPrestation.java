@@ -6,13 +6,13 @@ import static com.example.a77011_40_05.proxiservices.Utils.Constants._LOGO_LIST;
  * Created by 77011-40-05 on 15/03/2018.
  */
 
-public class Prestation {
+public class CategoryPrestation {
 
     String name;
     int id;
     String imgName;
 
-    public Prestation(String name, int id) {
+    public CategoryPrestation(String name, int id) {
         this.name = name;
         this.id = id;
         if( id< _LOGO_LIST.length){
