@@ -27,9 +27,15 @@ import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.UserPrestationFragment;
 import com.example.a77011_40_05.proxiservices.R;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.example.a77011_40_05.proxiservices.Utils.Functions;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -246,6 +252,27 @@ public class HomeActivity extends AppCompatActivity
         if(user.getProfilePic() != null ){
             Bitmap photo = Functions.loadFromInternalStorage(user.getProfilePic(),"profile.jpg");
             imgProfilePics.setImageBitmap(photo);
+        }else{
+            AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "getPhotoProfil.php", new AsyncCallWS.OnCallBackAsyncTask() {
+                @Override
+                public void onResultCallBack(String result) {
+                    Log.e(Constants._TAG_LOG,"Download profilpic ...");
+                    if(result.isEmpty() || result.equals("error")){
+                        Toast.makeText(context,"ERREUR: Telechargement photo de profil",Toast.LENGTH_LONG).show();
+                    }else if(result.contains(Constants._ERROR_PHP)){
+                        Toast.makeText(context,"ERREUR: Serveur",Toast.LENGTH_LONG).show();
+                        Log.e(Constants._TAG_LOG,result);
+                    }else{
+                        Gson gson = new Gson();
+                        JsonObject json = gson.fromJson(result,JsonObject.class);
+                        if(json.has("path")){
+                            Picasso.with(context).load(json.get("path").getAsString()).into(imgProfilePics);
+                        }
+                    }
+                }
+            });
+            asyncCallWS.addParam("idUser",""+user.getIdUser());
+            asyncCallWS.execute();
         }
     }
 }

@@ -17,12 +17,12 @@ import com.example.a77011_40_05.proxiservices.Utils.Constants;
  * Created by 77011-40-05 on 14/03/2018.
  */
 
-public class PrestationHolder extends RecyclerView.ViewHolder {
+public class CategoryPrestationHolder extends RecyclerView.ViewHolder {
 
     public final TextView txtName;
     public final ImageView imgPresta;
 
-    public PrestationHolder(View view){
+    public CategoryPrestationHolder(View view){
         super(view);
 
         txtName = (TextView) view.findViewById(R.id.txtName);

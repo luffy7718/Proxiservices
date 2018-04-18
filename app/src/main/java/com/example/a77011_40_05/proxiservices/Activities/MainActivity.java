@@ -12,7 +12,6 @@ import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
-import com.example.a77011_40_05.proxiservices.Utils.CallAsyncTask;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.google.gson.Gson;
 
@@ -29,10 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this;
         app = (App) getApplication();
         loadCategoriesPrestations();
-        context = this;
     }
 
     private void loadCategoriesPrestations(){
@@ -40,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResultCallBack(String result) {
                 if(!result.isEmpty()){
+                    Log.e(Constants._TAG_LOG,"loadCategoriesPrestations: "+result);
                     Gson gson = new Gson();
                     try{
                         app.setCategoriesPrestations(gson.fromJson(result,CategoriesPrestations.class));
@@ -72,13 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadUsers(){
         //Ancienne méthodes...
-        /*try{
-            CallAsyncTask callAsyncTask = new CallAsyncTask(Constants._URL_WEBSERVICE+"getAllUsers.php",new String[]{},context);
-            //CallAsyncTask callAsyncTask = new CallAsyncTask(_URL_WEBSERVICE+"loadusers.php",new String[]{},context);
-            callAsyncTask.execute();
-        }catch (Exception e){
-            Toast.makeText(this,"Connexion impossible", Toast.LENGTH_LONG).show();
-        }*/
     }
 
  }

@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
+import com.example.a77011_40_05.proxiservices.Adapters.CategoryPrestationAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
 
         rvwHomeFragment.setLayoutManager(layoutManager2);
         rvwHomeFragment.setItemAnimator(new DefaultItemAnimator());
-        rvwHomeFragment.setAdapter(new PrestationAdapter(categoriesPrestations,context,getActivity()));
+        rvwHomeFragment.setAdapter(new CategoryPrestationAdapter(categoriesPrestations,context,getActivity()));
 
         return view;
     }

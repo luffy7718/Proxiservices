@@ -10,6 +10,8 @@ public class Constants {
 
     //GENERAL
     public static final String SHARED_PREFERENCE = "ShareData" ;
+    public static final String _TAG_LOG = "#PROXISERVICES";
+    public static final String _ERROR_PHP = "Erreur PHP";
 
     //FRAGMENT CODE -->HomeActivity
     public final static int _FRAG_HOME = 0;

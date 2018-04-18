@@ -20,7 +20,6 @@ import com.example.a77011_40_05.proxiservices.Entities.User;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
-import com.example.a77011_40_05.proxiservices.Utils.CallAsyncTask;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
 import com.google.gson.Gson;
@@ -86,28 +85,29 @@ public class LoginActivity extends AppCompatActivity{
                     AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "login.php", new AsyncCallWS.OnCallBackAsyncTask() {
                         @Override
                         public void onResultCallBack(String result) {
-                            Gson gson = new Gson();
-                            Users users = gson.fromJson(result,Users.class);
-                            User user = users.get(0);
-                            Session.setMyUser(user);
-                            Session.setConnectionChecked(true);
-                            intent.putExtra("RETURN","VALIDATE");
-                            String[] data = new String[]{user.getNom(),user.getPrenom()};
-                            intent.putExtra("DATA",data);
-                            setResult(Constants._CODE_LOGIN,intent);
-                            finish();//finishing activity
+                            if (result.isEmpty() || result.equals("error")) {
+                                Toast.makeText(context, "Login ou mot de passe invalide.", Toast.LENGTH_LONG).show();
+                            }else if(result.contains(Constants._ERROR_PHP)){
+                                Toast.makeText(context, "Erreur serveur.", Toast.LENGTH_LONG).show();
+                            }else{
+                                Log.e(Constants._TAG_LOG,"login: "+result);
+                                Gson gson = new Gson();
+                                Users users = gson.fromJson(result,Users.class);
+                                User user = users.get(0);
+                                Session.setMyUser(user);
+                                Session.setConnectionChecked(true);
+                                intent.putExtra("RETURN","VALIDATE");
+                                String[] data = new String[]{user.getName(),user.getFirstname()};
+                                intent.putExtra("DATA",data);
+                                setResult(Constants._CODE_LOGIN,intent);
+                                finish();//finishing activity
+                            }
+                            vswLogin.showPrevious();
                         }
                     });
                     asyncCallWS.addParam("login",login);
                     asyncCallWS.addParam("password",password);
                     asyncCallWS.execute();
-                    /*requestType = Constants._LOGIN_REQUEST;
-                    lblLoginCurrentAction.setText("Connexion ...");
-                    String url = Constants._URL_WEBSERVICE+"login.php";
-                    String[] dataModel = new String[]{"login","password"};
-                    CallAsyncTask callAsyncTask = new CallAsyncTask(url,dataModel,context);
-                    callAsyncTask.useProgressDialog(context);
-                    callAsyncTask.execute(login,password);*/
                 }
             }
         });
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity{
         Session.setMyUser(user);
         Session.setConnectionChecked(true);
         intent.putExtra("RETURN","VALIDATE");
-        String[] data = new String[]{user.getNom(),user.getPrenom()};
+        String[] data = new String[]{user.getName(),user.getFirstname()};
         intent.putExtra("DATA",data);
         setResult(Constants._CODE_LOGIN,intent);
         finish();//finishing activity*/
@@ -169,15 +169,6 @@ public class LoginActivity extends AppCompatActivity{
                 });
                 asyncCallWS.addParam("login",login);
                 asyncCallWS.execute();
-
-                /*requestType = Constants._PASSWORD_REQUEST;
-                lblLoginCurrentAction.setText("Récupération du mot de passe ...");
-
-                //String url = _URL_WEBSERVICE+"passwordReminder.php";
-                String url = Constants._URL_WEBSERVICE+"lostpassword.php";
-                String[] dataModel = new String[]{"login"};
-                CallAsyncTask callAsyncTask = new CallAsyncTask(url,dataModel,context);
-                callAsyncTask.execute(login);*/
             }
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Fermer", new DialogInterface.OnClickListener() {

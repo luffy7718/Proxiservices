@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.a77011_40_05.proxiservices.Entities.CategoryPrestation;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
-import com.example.a77011_40_05.proxiservices.Holders.PrestationHolder;
+import com.example.a77011_40_05.proxiservices.Holders.CategoryPrestationHolder;
 import com.example.a77011_40_05.proxiservices.R;
 
 
@@ -17,17 +17,17 @@ import com.example.a77011_40_05.proxiservices.R;
  * Created by 77011-40-05 on 16/03/2018.
  */
 
-public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
+public class CategoryPrestationAdapter extends RecyclerView.Adapter<CategoryPrestationHolder> {
 
     CategoriesPrestations categoriesPrestations;
     Context context;
     Activity activity = null;
-    public PrestationAdapter(CategoriesPrestations categoriesPrestations, Context context) {
+    public CategoryPrestationAdapter(CategoriesPrestations categoriesPrestations, Context context) {
         this.categoriesPrestations = categoriesPrestations;
         this.context = context;
     }
 
-    public PrestationAdapter(CategoriesPrestations categoriesPrestations, Context context, Activity activity) {
+    public CategoryPrestationAdapter(CategoriesPrestations categoriesPrestations, Context context, Activity activity) {
         this.categoriesPrestations = categoriesPrestations;
         this.context = context;
         this.activity = activity;
@@ -35,14 +35,14 @@ public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
 
 
     @Override
-    public PrestationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoryPrestationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_prestation,parent,false);
-        return new PrestationHolder(view);
+        return new CategoryPrestationHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PrestationHolder holder, int position) {
+    public void onBindViewHolder(CategoryPrestationHolder holder, int position) {
         CategoryPrestation categoryPrestation = categoriesPrestations.get(position);
         holder.setPrestation(categoryPrestation,context,activity);
 
