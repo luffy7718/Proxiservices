@@ -2,11 +2,13 @@ package com.example.a77011_40_05.proxiservices.Activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,13 +26,22 @@ import com.example.a77011_40_05.proxiservices.Fragments.AccountFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountGalleryFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountProfilePicsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsAddServicesFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.MapsFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsSearchServicesFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.RequestFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.UserPrestationFragment;
 import com.example.a77011_40_05.proxiservices.R;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.example.a77011_40_05.proxiservices.Utils.Functions;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -46,8 +57,10 @@ public class HomeActivity extends AppCompatActivity
     AccountProfilePicsFragment accountProfilePicsFragment = null;
     AccountGalleryFragment accountGalleryFragment = null;
     UserPrestationFragment userPrestationFragment = null;
-    MapsFragment mapsFragment=null;
-
+    MapsFragment mapsFragment = null;
+    MapsAddServicesFragment mapsAddServicesFragment = null;
+    MapsSearchServicesFragment mapsSearchServicesFragment=null;
+    TabLayout tabLayout;
     TextView txtHeaderName;
     ImageView imgProfilePics;
 
@@ -57,7 +70,49 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
 
         context = this;
+tabLayout=findViewById(R.id.tabLayout);
+        //create a new tab named "first"
 
+        TabLayout.Tab firstTab=tabLayout.newTab();
+        firstTab.setText("Proposition");
+        firstTab.setIcon(R.drawable.propose);
+        //first tab
+        tabLayout.addTab(firstTab);
+        //
+        TabLayout.Tab secondTab=tabLayout.newTab();
+        secondTab.setText("Demande");
+        secondTab.setIcon(R.drawable.request);
+        tabLayout.addTab(secondTab);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Fragment fragment=null;
+                switch (tab.getPosition())
+                {
+                    case 0:
+                        fragment=new HomeFragment();
+                        break;
+                    case 1:
+                        fragment=new RequestFragment();
+                        break;
+
+                }
+                fragmentManager.beginTransaction().replace(R.id.frtHome,fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null)
+                        .commit();
+            }
+
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -114,15 +169,21 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            changeFragment(Constants._FRAG_SETTINGS, null);
-        }  else if(id == R.id.action_maps)
-            {
-                /*Intent intent=new Intent(HomeActivity.this,MapsActivity.class);
-                startActivityForResult(intent, 1);// Activity is started with requestCode 2*/
-                changeFragment(Constants.FRAG_Maps, null);
-            }
+            changeFragment(Constants._FRAG_SETTINGS,null);
 
-       return true;
+        }
+        else if(id == R.id.action_AddCarte)
+        {
+            changeFragment(Constants._FRAG_AddMAPS,null);
+        }
+        else if(id == R.id.action_SearchCarte)
+        {
+            changeFragment(Constants._FRAG_SearchMAPS,null);
+        }
+
+
+        return true;
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -212,12 +273,6 @@ public class HomeActivity extends AppCompatActivity
                 }
                 frag = accountProfilePicsFragment;
                 break;
-            case Constants.FRAG_Maps:
-                if(mapsFragment == null){
-                    mapsFragment = new MapsFragment();
-                }
-                frag = mapsFragment;
-                break;
             case Constants._FRAG_ACCOUNT_GALLERY:
                 if(accountGalleryFragment == null){
                     accountGalleryFragment = new AccountGalleryFragment();
@@ -229,6 +284,24 @@ public class HomeActivity extends AppCompatActivity
                     userPrestationFragment = UserPrestationFragment.newInstance(params);
                 //}
                 frag = userPrestationFragment;
+                break;
+            case Constants._FRAG_MAPS:
+                if(mapsFragment == null){
+                    mapsFragment = new MapsFragment();
+                }
+                frag = mapsFragment;
+                break;
+            case Constants._FRAG_SearchMAPS:
+                if(mapsSearchServicesFragment == null){
+                    mapsSearchServicesFragment = new MapsSearchServicesFragment();
+                }
+                frag = mapsSearchServicesFragment;
+                break;
+            case Constants._FRAG_AddMAPS:
+                if(mapsAddServicesFragment == null){
+                    mapsAddServicesFragment = new MapsAddServicesFragment();
+                }
+                frag = mapsAddServicesFragment;
                 break;
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);
@@ -258,6 +331,27 @@ public class HomeActivity extends AppCompatActivity
         if(user.getProfilePic() != null ){
             Bitmap photo = Functions.loadFromInternalStorage(user.getProfilePic(),"profile.jpg");
             imgProfilePics.setImageBitmap(photo);
+        }else{
+            AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "getPhotoProfil.php", new AsyncCallWS.OnCallBackAsyncTask() {
+                @Override
+                public void onResultCallBack(String result) {
+                    Log.e(Constants._TAG_LOG,"Download profilpic ...");
+                    if(result.isEmpty() || result.equals("error")){
+                        Toast.makeText(context,"ERREUR: Telechargement photo de profil",Toast.LENGTH_LONG).show();
+                    }else if(result.contains(Constants._ERROR_PHP)){
+                        Toast.makeText(context,"ERREUR: Serveur",Toast.LENGTH_LONG).show();
+                        Log.e(Constants._TAG_LOG,result);
+                    }else{
+                        Gson gson = new Gson();
+                        JsonObject json = gson.fromJson(result,JsonObject.class);
+                        if(json.has("path")){
+                            Picasso.with(context).load(json.get("path").getAsString()).into(imgProfilePics);
+                        }
+                    }
+                }
+            });
+            asyncCallWS.addParam("idUser",""+user.getIdUser());
+            asyncCallWS.execute();
         }
     }
 }

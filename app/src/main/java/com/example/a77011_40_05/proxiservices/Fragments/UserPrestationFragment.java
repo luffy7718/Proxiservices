@@ -17,11 +17,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Entities.User;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
 import com.example.a77011_40_05.proxiservices.R;
-import com.example.a77011_40_05.proxiservices.Utils.CallAsyncTask;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -32,7 +32,7 @@ public class UserPrestationFragment extends Fragment {
     RecyclerView rvwUserPrestationFragment;
     ListView lswUserPrestation;
     Context context;
-    Prestations prestations;
+    CategoriesPrestations categoriesPrestations;
     int idPrestation;
 
     public UserPrestationFragment() {
@@ -53,19 +53,17 @@ public class UserPrestationFragment extends Fragment {
         }
         //idPrestation = savedInstanceState.getInt("idPrestation");
         context = getActivity().getApplicationContext();
-        //String url = Constants._URL_WEBSERVICE+"getUserPrestation.php";
-        String url = Constants._URL_WEBSERVICE+"getAllUserPrestation.php";
-        String[] dataModel = new String[]{"idPrestation"};
-        CallAsyncTask callAsyncTask = new CallAsyncTask(url, dataModel, new CallAsyncTask.OnAsyncTaskListner() {
+        AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "getPrestationsByCategory.php", new AsyncCallWS.OnCallBackAsyncTask() {
             @Override
-            public void onResultGet(String result) {
+            public void onResultCallBack(String result) {
                 Gson gson = new Gson();
                 Users users = gson.fromJson(result, Users.class);
                 UserAdapter userAdapter = new UserAdapter(context, users);
                 lswUserPrestation.setAdapter(userAdapter);
             }
         });
-        callAsyncTask.execute(""+idPrestation);
+        asyncCallWS.addParam("idCategoryPrestation",""+idPrestation);
+        asyncCallWS.execute();
     }
 
     @Override
@@ -126,7 +124,7 @@ public class UserPrestationFragment extends Fragment {
                 viewHolder = (ViewHolder) itemView.getTag();
             }
             Log.e("[DEBUG]",user.getPath());
-            viewHolder.txtNom.setText(user.getNom().toUpperCase());
+            viewHolder.txtNom.setText(user.getName().toUpperCase());
             Picasso.with(context).load(user.getPath()).into(viewHolder.imgUser);
 
             return itemView;

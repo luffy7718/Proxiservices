@@ -15,8 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
+import com.example.a77011_40_05.proxiservices.Adapters.CategoryPrestationAdapter;
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
 
@@ -24,7 +24,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView rvwHomeFragment;
     Context context;
-    Prestations prestations;
+    CategoriesPrestations categoriesPrestations;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
 
         context = getActivity().getApplicationContext();
         App app = (App) getActivity().getApplication();
-        prestations = app.getPrestations();
+        categoriesPrestations = app.getCategoriesPrestations();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
 
         rvwHomeFragment.setLayoutManager(layoutManager2);
         rvwHomeFragment.setItemAnimator(new DefaultItemAnimator());
-        rvwHomeFragment.setAdapter(new PrestationAdapter(prestations,context,getActivity()));
+        rvwHomeFragment.setAdapter(new CategoryPrestationAdapter(categoriesPrestations,context,getActivity()));
 
         return view;
     }

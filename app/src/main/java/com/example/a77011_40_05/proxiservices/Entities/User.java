@@ -7,8 +7,8 @@ package com.example.a77011_40_05.proxiservices.Entities;
 public class User {
 
     private int idUser;
-    private String nom;
-    private String prenom;
+    private String name;
+    private String firstname;
     private String login;
     private String password;
     private String path;
@@ -27,20 +27,20 @@ public class User {
         return idUser;
     }
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getLogin() {
@@ -60,7 +60,7 @@ public class User {
     }
 
     public String getFullName(){
-        return nom+" "+prenom;
+        return name +" "+ firstname;
     }
 
 

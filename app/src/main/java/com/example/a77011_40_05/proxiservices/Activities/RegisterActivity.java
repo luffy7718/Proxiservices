@@ -11,11 +11,11 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.a77011_40_05.proxiservices.R;
-import com.example.a77011_40_05.proxiservices.Utils.CallAsyncTask;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 
 
-public class RegisterActivity extends AppCompatActivity implements CallAsyncTask.OnAsyncTaskListner {
+public class RegisterActivity extends AppCompatActivity {
 
     EditText txtRegisterName, txtRegisterFirstName, txtRegisterLogin, txtRegisterpwd;
     ViewSwitcher vswRegister;
@@ -39,26 +39,30 @@ public class RegisterActivity extends AppCompatActivity implements CallAsyncTask
             @Override
             public void onClick(View view) {
 
-                String nom = txtRegisterName.getText().toString();
-                String prenom = txtRegisterFirstName.getText().toString();
+                String name = txtRegisterName.getText().toString();
+                String firstname = txtRegisterFirstName.getText().toString();
                 String login = txtRegisterLogin.getText().toString();
-                String mdp = txtRegisterpwd.getText().toString();
+                String password = txtRegisterpwd.getText().toString();
 
-                if(!nom.isEmpty() && !prenom.isEmpty() && !login.isEmpty() && !mdp.isEmpty()){
+                if(!name.isEmpty() && !firstname.isEmpty() && !login.isEmpty() && !password.isEmpty()){
                     vswRegister.showNext();
-                    String url = Constants._URL_WEBSERVICE+"addUser.php";
-                    String[] dataModel = new String[]{"nom","prenom","login","password"};
-                    CallAsyncTask callAsyncTask = new CallAsyncTask(url,dataModel,context);
-                    callAsyncTask.useProgressDialog(context);
-                    callAsyncTask.execute(nom,prenom,login,mdp);
-
+                    AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "addUser.php", new AsyncCallWS.OnCallBackAsyncTask() {
+                        @Override
+                        public void onResultCallBack(String result) {
+                            onResultGet(result);
+                        }
+                    });
+                    asyncCallWS.addParam("name",name);
+                    asyncCallWS.addParam("firstname",firstname);
+                    asyncCallWS.addParam("login",login);
+                    asyncCallWS.addParam("password",password);
+                    asyncCallWS.execute();
                 }
 
             }
         });
     }
 
-    @Override
     public void onResultGet(String result) {
         Log.e("[DEBUG]",result);
         int idUser = 0;

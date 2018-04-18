@@ -31,7 +31,8 @@ import android.widget.Toast;
 import com.example.a77011_40_05.proxiservices.Adapters.PhotoAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.Photos;
 import com.example.a77011_40_05.proxiservices.R;
-import com.example.a77011_40_05.proxiservices.Utils.CallAsyncTask;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
+import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.example.a77011_40_05.proxiservices.Utils.Functions;
 import com.example.a77011_40_05.proxiservices.Utils.GenericAlertDialog;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
@@ -196,17 +197,18 @@ public class AccountGalleryFragment extends Fragment {
                             String photoString = castPhotoToString(photo);
 
                             int idUser = Session.getMyUser().getIdUser();
-                            String url = _URL_WEBSERVICE+"addPhoto.php";
-                            String[] dataModel = new String[]{"idPhotoPhone","idUser","name","photoString"};
-                            CallAsyncTask callAsyncTask = new CallAsyncTask(url, dataModel, new CallAsyncTask.OnAsyncTaskListner() {
+                            AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "addPhoto.php", new AsyncCallWS.OnCallBackAsyncTask() {
                                 @Override
-                                public void onResultGet(String result) {
+                                public void onResultCallBack(String result) {
                                     Toast.makeText(context,"Result: "+result, Toast.LENGTH_LONG).show();
                                     Log.e("[DEBUG]","Result: "+result);
                                 }
                             });
-                            callAsyncTask.useProgressDialog(getActivity());
-                            callAsyncTask.execute(""+idPhotoPhone,""+idUser,txtPhoto,photoString);
+                            asyncCallWS.addParam("idPhotoPhone",""+idPhotoPhone);
+                            asyncCallWS.addParam("idUser",""+idUser);
+                            asyncCallWS.addParam("name",txtPhoto);
+                            asyncCallWS.addParam("photoString",photoString);
+                            asyncCallWS.execute();
                         }
                     }
                 });
