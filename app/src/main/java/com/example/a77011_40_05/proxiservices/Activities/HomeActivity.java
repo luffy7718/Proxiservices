@@ -37,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -266,7 +268,10 @@ public class HomeActivity extends AppCompatActivity
                         Gson gson = new Gson();
                         JsonObject json = gson.fromJson(result,JsonObject.class);
                         if(json.has("path")){
-                            Picasso.with(context).load(json.get("path").getAsString()).into(imgProfilePics);
+                            Picasso.with(context)
+                                    .load(json.get("path").getAsString())
+                                    .transform(new CropCircleTransformation())
+                                    .into(imgProfilePics);
                         }
                     }
                 }
