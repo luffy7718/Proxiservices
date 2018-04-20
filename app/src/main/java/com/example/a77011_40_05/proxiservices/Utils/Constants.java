@@ -22,6 +22,9 @@ public class Constants {
     public final static int _FRAG_USER_PRESTATION = 5;
 
 
+    public final static int _FRAG_SEARCH = 100;
+
+
     //STARTACTIVITYFORRESULT -->HomeActivity
     public final static int _CODE_LOGIN = 2;
 

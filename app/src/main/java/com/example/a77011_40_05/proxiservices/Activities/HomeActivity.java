@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.example.a77011_40_05.proxiservices.Fragments.AccountFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountGalleryFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountProfilePicsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.SearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.UserPrestationFragment;
 import com.example.a77011_40_05.proxiservices.R;
@@ -54,6 +57,8 @@ public class HomeActivity extends AppCompatActivity
     AccountGalleryFragment accountGalleryFragment = null;
     UserPrestationFragment userPrestationFragment = null;
 
+    SearchFragment searchFragment = null;
+
     TextView txtHeaderName;
     ImageView imgProfilePics;
 
@@ -70,6 +75,7 @@ public class HomeActivity extends AppCompatActivity
         //Chargement du fragment de départ
         fragmentManager = getFragmentManager();
         changeFragment(Constants._FRAG_HOME,null);
+
 
         /*TODO: voir le commentaire dans le layout.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -92,6 +98,14 @@ public class HomeActivity extends AppCompatActivity
 
         txtHeaderName = navigationView.getHeaderView(0).findViewById(R.id.txtHeader_name);
         imgProfilePics = navigationView.getHeaderView(0).findViewById(R.id.imgProfilePic);
+
+
+        /*searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,searchView.getQuery(),Toast.LENGTH_LONG).show();
+            }
+        });*/
     }
 
     @Override
@@ -108,6 +122,31 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        //Search
+        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(!query.isEmpty()){
+                    Bundle params = new Bundle();
+                    params.putString("search", query);
+                    changeFragment(Constants._FRAG_SEARCH,params);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+            /*setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,searchView.getQuery(),Toast.LENGTH_LONG).show();
+            }
+        });*/
         return true;
     }
 
@@ -123,7 +162,6 @@ public class HomeActivity extends AppCompatActivity
             changeFragment(Constants._FRAG_SETTINGS,null);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -225,6 +263,10 @@ public class HomeActivity extends AppCompatActivity
                     userPrestationFragment = UserPrestationFragment.newInstance(params);
                 //}
                 frag = userPrestationFragment;
+                break;
+            case Constants._FRAG_SEARCH:
+                searchFragment = SearchFragment.newInstance(params);
+                frag = searchFragment;
                 break;
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);

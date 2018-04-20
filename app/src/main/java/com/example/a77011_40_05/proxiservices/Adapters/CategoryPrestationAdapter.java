@@ -37,7 +37,7 @@ public class CategoryPrestationAdapter extends RecyclerView.Adapter<CategoryPres
     @Override
     public CategoryPrestationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_prestation,parent,false);
+                .inflate(R.layout.card_view_category_prestation,parent,false);
         return new CategoryPrestationHolder(view);
     }
 
