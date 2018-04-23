@@ -9,18 +9,10 @@ public class User {
     private int idUser;
     private String name;
     private String firstname;
-    private String login;
-    private String password;
     private String path;
-    private String profilePic = null;
 
     public User(){
 
-    }
-
-    public User(String login, String password){
-        this.login = login;
-        this.password = password;
     }
 
     public int getIdUser() {
@@ -43,33 +35,8 @@ public class User {
         this.firstname = firstname;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getFullName(){
         return name +" "+ firstname;
-    }
-
-
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
     }
 
     public String getPath() {

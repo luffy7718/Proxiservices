@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.a77011_40_05.proxiservices.Fragments.HomeFragment">
 
-    <ListView
-        android:id="@+id/lswUserPrestation"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvwPrestationsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </FrameLayout>

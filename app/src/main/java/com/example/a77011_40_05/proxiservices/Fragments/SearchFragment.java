@@ -22,6 +22,7 @@ import android.widget.ListView;
 import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
 import com.example.a77011_40_05.proxiservices.Adapters.PhotoAdapter;
 import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
+import com.example.a77011_40_05.proxiservices.Adapters.UserAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.Prestation;
 import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
@@ -50,6 +51,7 @@ public class SearchFragment extends Fragment {
     Prestations prestations;
     Users users;
     PrestationAdapter prestationAdapter;
+    UserAdapter userAdapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -81,7 +83,20 @@ public class SearchFragment extends Fragment {
                             Log.e(Constants._TAG_LOG,"Services: "+json.get("services").getAsString());
                             try{
                                 prestations = gson.fromJson(json.get("services").getAsString(),Prestations.class);
-                                refresh();
+                                prestationAdapter = new PrestationAdapter(prestations,context);
+                                rvwSearchServices.setAdapter(prestationAdapter);
+                            }catch (Exception e){
+                                Log.e(Constants._TAG_LOG,"ERROR "+e.getMessage());
+                            }
+
+                        }
+
+                        if(json.has("users")){
+                            Log.e(Constants._TAG_LOG,"Users: "+json.get("users").getAsString());
+                            try{
+                                users = gson.fromJson(json.get("users").getAsString(),Users.class);
+                                userAdapter = new UserAdapter(users,context);
+                                rvwSearchUsers.setAdapter(userAdapter);
                             }catch (Exception e){
                                 Log.e(Constants._TAG_LOG,"ERROR "+e.getMessage());
                             }
@@ -113,6 +128,14 @@ public class SearchFragment extends Fragment {
         rvwSearchServices.setItemAnimator(new DefaultItemAnimator());
         prestationAdapter = new PrestationAdapter(prestations,context);
         rvwSearchServices.setAdapter(prestationAdapter);
+
+        users = new Users();
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
+        rvwSearchUsers.setLayoutManager(layoutManager2);
+        rvwSearchUsers.setItemAnimator(new DefaultItemAnimator());
+        userAdapter = new UserAdapter(users,context);
+        rvwSearchUsers.setAdapter(userAdapter);
+
         return view;
     }
 

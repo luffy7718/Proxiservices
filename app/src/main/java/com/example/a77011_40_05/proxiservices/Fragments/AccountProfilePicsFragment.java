@@ -84,7 +84,7 @@ public class AccountProfilePicsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(path != null){
-                    Session.getMyUser().setProfilePic(path);
+                    Session.getMyUser().setPath(path);
                     HomeActivity home = (HomeActivity) getActivity();
                     home.userHasChange(Session.getMyUser());
                     home.changeFragment(_FRAG_ACCOUNT,null);

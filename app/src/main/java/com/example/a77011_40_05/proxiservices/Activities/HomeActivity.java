@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -28,17 +26,14 @@ import com.example.a77011_40_05.proxiservices.Fragments.AccountProfilePicsFragme
 import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
-import com.example.a77011_40_05.proxiservices.Fragments.UserPrestationFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.PrestationSearchFragment;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
-import com.example.a77011_40_05.proxiservices.Utils.Functions;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
@@ -55,7 +50,7 @@ public class HomeActivity extends AppCompatActivity
     AccountFragment accountFragment = null;
     AccountProfilePicsFragment accountProfilePicsFragment = null;
     AccountGalleryFragment accountGalleryFragment = null;
-    UserPrestationFragment userPrestationFragment = null;
+    PrestationSearchFragment prestationSearchFragment = null;
 
     SearchFragment searchFragment = null;
 
@@ -141,12 +136,6 @@ public class HomeActivity extends AppCompatActivity
                 return false;
             }
         });
-            /*setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,searchView.getQuery(),Toast.LENGTH_LONG).show();
-            }
-        });*/
         return true;
     }
 
@@ -258,11 +247,11 @@ public class HomeActivity extends AppCompatActivity
                 }
                 frag = accountGalleryFragment;
                 break;
-            case Constants._FRAG_USER_PRESTATION:
-                //if(userPrestationFragment == null){
-                    userPrestationFragment = UserPrestationFragment.newInstance(params);
+            case Constants._FRAG_PRESTATION_SEARCH:
+                //if(prestationSearchFragment == null){
+                    prestationSearchFragment = PrestationSearchFragment.newInstance(params);
                 //}
-                frag = userPrestationFragment;
+                frag = prestationSearchFragment;
                 break;
             case Constants._FRAG_SEARCH:
                 searchFragment = SearchFragment.newInstance(params);
@@ -293,9 +282,11 @@ public class HomeActivity extends AppCompatActivity
 
     public void userHasChange(User user){
         txtHeaderName.setText(user.getFullName());
-        if(user.getProfilePic() != null ){
-            Bitmap photo = Functions.loadFromInternalStorage(user.getProfilePic(),"profile.jpg");
-            imgProfilePics.setImageBitmap(photo);
+        if(user.getPath() != null ){
+            Picasso.with(context)
+                    .load(Constants._URL_WEBSERVICE+user.getPath())
+                    .transform(new CropCircleTransformation())
+                    .into(imgProfilePics);
         }else{
             AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "getPhotoProfil.php", new AsyncCallWS.OnCallBackAsyncTask() {
                 @Override
@@ -311,7 +302,7 @@ public class HomeActivity extends AppCompatActivity
                         JsonObject json = gson.fromJson(result,JsonObject.class);
                         if(json.has("path")){
                             Picasso.with(context)
-                                    .load(json.get("path").getAsString())
+                                    .load(Constants._URL_WEBSERVICE+json.get("path").getAsString())
                                     .transform(new CropCircleTransformation())
                                     .into(imgProfilePics);
                         }
