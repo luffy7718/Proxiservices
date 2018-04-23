@@ -5,7 +5,12 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
+
+import com.example.a77011_40_05.proxiservices.Entities.Erreur;
+import com.example.a77011_40_05.proxiservices.Services.ErreurIntentService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -132,6 +137,37 @@ public class Functions {
         } catch (Exception e){
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    public static boolean isConnectionAvailable(Context context) {
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (netInfo != null && netInfo.isConnected()
+                    && netInfo.isConnectedOrConnecting()
+                    && netInfo.isAvailable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void addErreur(Erreur erreur, Context context) {
+
+        if (isConnectionAvailable(context)) {
+            try {
+                ErreurIntentService.startActionErreur(context, erreur);
+
+            } catch (Exception ex) {
+
+            }
+        } else {
+            App.addErreur(erreur,context);
         }
     }
 }

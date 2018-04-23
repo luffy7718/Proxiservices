@@ -1,17 +1,21 @@
 package com.example.a77011_40_05.proxiservices.Utils;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.Configuration;
 
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
+import com.example.a77011_40_05.proxiservices.Entities.Erreur;
+import com.example.a77011_40_05.proxiservices.Entities.Erreurs;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
+import com.google.gson.Gson;
 
 /**
  * Created by 77011-40-05 on 15/03/2018.
  */
 
 public class App extends Application {
-
+    public static Erreurs erreurs;
     private static Users users;
     private static CategoriesPrestations categoriesPrestations;
 
@@ -53,4 +57,40 @@ public class App extends Application {
     public void onLowMemory() {
         super.onLowMemory();
     }
+
+    public static void addErreur(Erreur erreur, Context context) {
+
+        if(App.erreurs == null)
+        {
+            App.erreurs = new Erreurs();
+        }
+        App.erreurs.add(erreur);
+        saveErreur(context);
+    }
+
+    public static void saveErreur(Context context)
+    {
+        Gson gson = new Gson();
+        String erreurs = gson.toJson(App.erreurs);
+
+        Functions.addPreferenceString(context,"Erreurs",erreurs);
+    }
+
+    public static void loadErreur(Context context)
+    {
+        String erreurs = Functions.getPreferenceString(context,"Erreurs");
+
+        if(!erreurs.isEmpty())
+        {
+            Gson gson = new Gson();
+            App.erreurs.addAll(gson.fromJson(erreurs,Erreurs.class));
+        }
+    }
+
+    public static void deleteErreur(Context context)
+    {
+        App.erreurs = new Erreurs();
+        Functions.addPreferenceString(context,"Erreurs","");
+    }
+
 }

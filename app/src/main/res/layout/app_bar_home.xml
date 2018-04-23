@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.example.a77011_40_05.proxiservices.Activities.HomeActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -31,4 +32,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
     -->
+
+
 </android.support.design.widget.CoordinatorLayout>

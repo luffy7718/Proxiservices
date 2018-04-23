@@ -1,12 +1,15 @@
 package com.example.a77011_40_05.proxiservices.Activities;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,22 +17,32 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a77011_40_05.proxiservices.Adapters.MyPagerAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.User;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountGalleryFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountProfilePicsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsAddServicesFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsSearchServicesFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.ProposeFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.PrestationSearchFragment;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
+import com.example.a77011_40_05.proxiservices.Utils.DepthPageTransform;
+import com.example.a77011_40_05.proxiservices.Utils.Functions;
+import com.example.a77011_40_05.proxiservices.Utils.ZoomPageTransformer;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -42,6 +55,11 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Context context;
+    ViewPager viewPager;
+    Activity activity;
+    TextView txtHeaderName;
+    ImageView imgProfilePics;
+    Button btnSearch;
 
     //Fragments
     FragmentManager fragmentManager;
@@ -50,12 +68,14 @@ public class HomeActivity extends AppCompatActivity
     AccountFragment accountFragment = null;
     AccountProfilePicsFragment accountProfilePicsFragment = null;
     AccountGalleryFragment accountGalleryFragment = null;
+    MapsFragment mapsFragment = null;
+    MapsAddServicesFragment mapsAddServicesFragment = null;
+    MapsSearchServicesFragment mapsSearchServicesFragment=null;
+    ProposeFragment proposeFragment=null;
     PrestationSearchFragment prestationSearchFragment = null;
-
     SearchFragment searchFragment = null;
 
-    TextView txtHeaderName;
-    ImageView imgProfilePics;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +90,6 @@ public class HomeActivity extends AppCompatActivity
         //Chargement du fragment de départ
         fragmentManager = getFragmentManager();
         changeFragment(Constants._FRAG_HOME,null);
-
 
         /*TODO: voir le commentaire dans le layout.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -93,14 +112,6 @@ public class HomeActivity extends AppCompatActivity
 
         txtHeaderName = navigationView.getHeaderView(0).findViewById(R.id.txtHeader_name);
         imgProfilePics = navigationView.getHeaderView(0).findViewById(R.id.imgProfilePic);
-
-
-        /*searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,searchView.getQuery(),Toast.LENGTH_LONG).show();
-            }
-        });*/
     }
 
     @Override
@@ -149,9 +160,24 @@ public class HomeActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             changeFragment(Constants._FRAG_SETTINGS,null);
-            return true;
+
         }
-        return super.onOptionsItemSelected(item);
+        else if(id == R.id.action_AddCarte)
+        {
+            changeFragment(Constants._FRAG_AddMAPS,null);
+        }
+        else if(id == R.id.action_SearchCarte)
+        {
+            changeFragment(Constants._FRAG_SearchMAPS,null);
+        }
+        else if(id == R.id.action_maps)
+        {
+            changeFragment(Constants._FRAG_MAPS,null);
+        }
+
+
+        return true;
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -253,6 +279,30 @@ public class HomeActivity extends AppCompatActivity
                 //}
                 frag = prestationSearchFragment;
                 break;
+            case Constants._FRAG_MAPS:
+                if(mapsFragment == null){
+                    mapsFragment = new MapsFragment();
+                }
+                frag = mapsFragment;
+                break;
+            case Constants._FRAG_SearchMAPS:
+                if(mapsSearchServicesFragment == null){
+                    mapsSearchServicesFragment = new MapsSearchServicesFragment();
+                }
+                frag = mapsSearchServicesFragment;
+                break;
+
+            case Constants._Frags_search:
+                if(proposeFragment == null){
+                    proposeFragment = new ProposeFragment();
+                }
+                frag = proposeFragment;
+                break;
+            case Constants._FRAG_AddMAPS:
+                if(mapsAddServicesFragment == null){
+                    mapsAddServicesFragment = new MapsAddServicesFragment();
+                }
+                frag = mapsAddServicesFragment;
             case Constants._FRAG_SEARCH:
                 searchFragment = SearchFragment.newInstance(params);
                 frag = searchFragment;
