@@ -12,7 +12,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,13 @@ import com.example.a77011_40_05.proxiservices.Adapters.CategoryPrestationAdapter
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
-import com.example.a77011_40_05.proxiservices.Utils.Constants;
 
 public class HomeFragment extends Fragment {
 
     RecyclerView rvwHomeFragment;
     Context context;
     CategoriesPrestations categoriesPrestations;
-Button btnSearch;
+Button btnAllServices;
 
     FragmentManager fragmentManager;
 
@@ -67,13 +65,13 @@ Button btnSearch;
         rvwHomeFragment.setLayoutManager(layoutManager2);
         rvwHomeFragment.setItemAnimator(new DefaultItemAnimator());
         rvwHomeFragment.setAdapter(new CategoryPrestationAdapter(categoriesPrestations,context,getActivity()));
-        btnSearch=(Button)view.findViewById(R.id.btnSearch);
+        btnAllServices=(Button)view.findViewById(R.id.btnAllServices);
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        btnAllServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProposeFragment proposeFragment = new ProposeFragment();
-                loadFragment(proposeFragment );
+                PrestationsSearchFragment prestationsSearchFragment = new PrestationsSearchFragment();
+                loadFragment(prestationsSearchFragment);
             }
         });
 

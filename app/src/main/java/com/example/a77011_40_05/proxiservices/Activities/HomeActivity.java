@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,32 +16,26 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a77011_40_05.proxiservices.Adapters.MyPagerAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.User;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountGalleryFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.AccountProfilePicsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
-import com.example.a77011_40_05.proxiservices.Fragments.MapsAddServicesFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsAddFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.MapsFragment;
-import com.example.a77011_40_05.proxiservices.Fragments.MapsSearchServicesFragment;
-import com.example.a77011_40_05.proxiservices.Fragments.ProposeFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.MapsSearchFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.PrestationsSearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
-import com.example.a77011_40_05.proxiservices.Fragments.PrestationSearchFragment;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
-import com.example.a77011_40_05.proxiservices.Utils.DepthPageTransform;
-import com.example.a77011_40_05.proxiservices.Utils.Functions;
-import com.example.a77011_40_05.proxiservices.Utils.ZoomPageTransformer;
 import com.example.a77011_40_05.proxiservices.Utils.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -69,10 +62,9 @@ public class HomeActivity extends AppCompatActivity
     AccountProfilePicsFragment accountProfilePicsFragment = null;
     AccountGalleryFragment accountGalleryFragment = null;
     MapsFragment mapsFragment = null;
-    MapsAddServicesFragment mapsAddServicesFragment = null;
-    MapsSearchServicesFragment mapsSearchServicesFragment=null;
-    ProposeFragment proposeFragment=null;
-    PrestationSearchFragment prestationSearchFragment = null;
+    MapsAddFragment mapsAddFragment = null;
+    MapsSearchFragment mapsSearchFragment =null;
+    PrestationsSearchFragment prestationsSearchFragment =null;
     SearchFragment searchFragment = null;
 
 
@@ -137,7 +129,7 @@ public class HomeActivity extends AppCompatActivity
                 if(!query.isEmpty()){
                     Bundle params = new Bundle();
                     params.putString("search", query);
-                    changeFragment(Constants._FRAG_SEARCH,params);
+                    changeFragment(Constants._FRAG_SEARCH_TEXT,params);
                 }
                 return false;
             }
@@ -164,11 +156,11 @@ public class HomeActivity extends AppCompatActivity
         }
         else if(id == R.id.action_AddCarte)
         {
-            changeFragment(Constants._FRAG_AddMAPS,null);
+            changeFragment(Constants._FRAG_MAPS_ADD,null);
         }
         else if(id == R.id.action_SearchCarte)
         {
-            changeFragment(Constants._FRAG_SearchMAPS,null);
+            changeFragment(Constants._FRAG_MAPS_SEARCH,null);
         }
         else if(id == R.id.action_maps)
         {
@@ -272,37 +264,30 @@ public class HomeActivity extends AppCompatActivity
                 }
                 frag = accountGalleryFragment;
                 break;
-            case Constants._FRAG_PRESTATION_SEARCH:
-                //if(prestationSearchFragment == null){
-                    prestationSearchFragment = PrestationSearchFragment.newInstance(params);
-                //}
-                frag = prestationSearchFragment;
-                break;
             case Constants._FRAG_MAPS:
                 if(mapsFragment == null){
                     mapsFragment = new MapsFragment();
                 }
                 frag = mapsFragment;
                 break;
-            case Constants._FRAG_SearchMAPS:
-                if(mapsSearchServicesFragment == null){
-                    mapsSearchServicesFragment = new MapsSearchServicesFragment();
+            case Constants._FRAG_MAPS_SEARCH:
+                if(mapsSearchFragment == null){
+                    mapsSearchFragment = new MapsSearchFragment();
                 }
-                frag = mapsSearchServicesFragment;
+                frag = mapsSearchFragment;
                 break;
 
-            case Constants._Frags_search:
-                if(proposeFragment == null){
-                    proposeFragment = new ProposeFragment();
-                }
-                frag = proposeFragment;
+            case Constants._FRAG_PRESTATION_SEARCH:
+                prestationsSearchFragment = PrestationsSearchFragment.newInstance(params);
+                frag = prestationsSearchFragment;
                 break;
-            case Constants._FRAG_AddMAPS:
-                if(mapsAddServicesFragment == null){
-                    mapsAddServicesFragment = new MapsAddServicesFragment();
+            case Constants._FRAG_MAPS_ADD:
+                if(mapsAddFragment == null){
+                    mapsAddFragment = new MapsAddFragment();
                 }
-                frag = mapsAddServicesFragment;
-            case Constants._FRAG_SEARCH:
+                frag = mapsAddFragment;
+                break;
+            case Constants._FRAG_SEARCH_TEXT:
                 searchFragment = SearchFragment.newInstance(params);
                 frag = searchFragment;
                 break;

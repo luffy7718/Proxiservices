@@ -41,7 +41,7 @@ import java.util.List;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsSearchServicesFragment extends Fragment implements OnMapReadyCallback, LocationListener{
+public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, LocationListener{
 
     private GoogleMap Maps;
     double latitude = 48.866667;
@@ -57,13 +57,13 @@ public class MapsSearchServicesFragment extends Fragment implements OnMapReadyCa
 
     private OnFragmentInteractionListener mListener;
 
-    public MapsSearchServicesFragment() {
+    public MapsSearchFragment() {
         // Required empty public constructor
     }
 
-    public static MapsSearchServicesFragment newInstance(int zoom, List<Location> locations) {
+    public static MapsSearchFragment newInstance(int zoom, List<Location> locations) {
 
-        MapsSearchServicesFragment fragment = new MapsSearchServicesFragment();
+        MapsSearchFragment fragment = new MapsSearchFragment();
 
 
         return fragment;
@@ -79,7 +79,7 @@ public class MapsSearchServicesFragment extends Fragment implements OnMapReadyCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_searchmaps, container, false);
+        View view = inflater.inflate(R.layout.fragment_maps_search, container, false);
 
         mapView = (MapView) view.findViewById(R.id.mapView);
         progressRadius = (AppCompatSeekBar) view.findViewById(R.id.progress);

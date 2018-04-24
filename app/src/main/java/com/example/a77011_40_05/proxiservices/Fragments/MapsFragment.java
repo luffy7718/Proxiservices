@@ -5,7 +5,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,20 +14,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.example.a77011_40_05.proxiservices.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -55,7 +49,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     double longitude = 2.333333;
 
 
-    private MapsSearchServicesFragment.OnFragmentInteractionListener mListener;
+    private MapsSearchFragment.OnFragmentInteractionListener mListener;
 
     public MapsFragment() {
         // Required empty public constructor

@@ -18,15 +18,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
@@ -35,8 +31,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -60,7 +54,7 @@ import javax.xml.transform.stream.StreamResult;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsAddServicesFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class MapsAddFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap Maps;
     double latitude = 48.866667;
@@ -78,13 +72,13 @@ public class MapsAddServicesFragment extends Fragment implements OnMapReadyCallb
 
     private OnFragmentInteractionListener mListener;
 
-    public MapsAddServicesFragment() {
+    public MapsAddFragment() {
         // Required empty public constructor
     }
 
-    public static MapsAddServicesFragment newInstance(int zoom, List<Location> locations) {
+    public static MapsAddFragment newInstance(int zoom, List<Location> locations) {
 
-        MapsAddServicesFragment fragment = new MapsAddServicesFragment();
+        MapsAddFragment fragment = new MapsAddFragment();
 
 
         return fragment;
@@ -100,7 +94,7 @@ public class MapsAddServicesFragment extends Fragment implements OnMapReadyCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_addmaps, container, false);
+        View view = inflater.inflate(R.layout.fragment_maps_add, container, false);
 
         mapView = (MapView) view.findViewById(R.id.mapView);
         btnClearRoute=(Button) view.findViewById(R.id.btnClearRoute);

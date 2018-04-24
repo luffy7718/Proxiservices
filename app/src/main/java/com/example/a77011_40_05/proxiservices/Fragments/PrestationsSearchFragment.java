@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.a77011_40_05.proxiservices.Adapters.MyPagerAdapter;
@@ -23,24 +26,31 @@ import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.example.a77011_40_05.proxiservices.Utils.DepthPageTransform;
 import com.example.a77011_40_05.proxiservices.Utils.ZoomPageTransformer;
-import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class ProposeFragment extends Fragment {
+public class PrestationsSearchFragment extends Fragment {
 
     ViewPager viewPager;
+    Spinner spinCategory;
     Context context;
+    MyPagerAdapter myPagerAdapter;
     FragmentActivity fragmentActivity;
     App app;
 
+    //FILTERS
+    int idCategoryPrestation = -1;
 
-    public ProposeFragment() {
+
+    public PrestationsSearchFragment() {
         // Required empty public constructor
     }
 
 
-    public static ProposeFragment newInstance(Bundle args) {
-        ProposeFragment fragment = new ProposeFragment();
+    public static PrestationsSearchFragment newInstance(Bundle args) {
+        PrestationsSearchFragment fragment = new PrestationsSearchFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,9 +59,13 @@ public class ProposeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            if(getArguments().containsKey("idCategoryPrestation")){
+                idCategoryPrestation = getArguments().getInt("idCategoryPrestation");
+            }
+        }
         context = getActivity().getApplicationContext();
-         app = (App) getActivity().getApplication();
+        app = (App) getActivity().getApplication();
 
     }
 
@@ -61,12 +75,13 @@ public class ProposeFragment extends Fragment {
         // Inflate the layout for this fragment
 
 
-        View view=inflater.inflate(R.layout.fragment_propose, container, false);
+        View view=inflater.inflate(R.layout.fragment_prestations_search, container, false);
 
         viewPager=(ViewPager)view.findViewById(R.id.pager);
 
         //getSupportFragmentManager()));
-        viewPager.setAdapter(new MyPagerAdapter(fragmentActivity.getSupportFragmentManager()));
+        myPagerAdapter = new MyPagerAdapter(fragmentActivity.getSupportFragmentManager());
+        viewPager.setAdapter(myPagerAdapter);
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
@@ -75,10 +90,59 @@ public class ProposeFragment extends Fragment {
         viewPager.setPageTransformer(false, new ZoomPageTransformer());
         viewPager.setPageTransformer(false, new DepthPageTransform());
 
-        //viewPager.On page change ??
 
-     
+        spinCategory = (Spinner) view.findViewById(R.id.spinCategory);
+
+        List<String> categories=new ArrayList<>();
+        categories.add("Tous");
+        CategoriesPrestations cps = App.getCategoriesPrestations();
+        for(int i= 0;i<cps.size();i++){
+            categories.add(cps.get(i).getName());
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,categories);
+
+        // Drop down style will be listview with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+
+        // attaching data adapter to spinner
+        spinCategory.setAdapter(dataAdapter);
+
+        if(idCategoryPrestation != -1){
+            spinCategory.setSelection(idCategoryPrestation);
+        }
+
+        spinCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(context, "Selected",Toast.LENGTH_SHORT).show();
+                idCategoryPrestation = position;
+                filterHasChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         return view;
+    }
+
+    private void filterHasChange(){
+        AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "getPrestationsByFilter.php", new AsyncCallWS.OnCallBackAsyncTask() {
+            @Override
+            public void onResultCallBack(String result) {
+                if(!result.isEmpty()){
+                    Log.e(Constants._TAG_LOG,"Result: "+result);
+                    myPagerAdapter.reloadPrestations(result);
+                }
+            }
+        });
+        //asyncCallWS.addParam("isRequest",""+mode);
+        if(idCategoryPrestation != 0){
+            asyncCallWS.addParam("idCategoryPrestation",""+idCategoryPrestation);
+        }
+        asyncCallWS.execute();
     }
 
     @TargetApi(23)

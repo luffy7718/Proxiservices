@@ -8,36 +8,22 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
-import com.example.a77011_40_05.proxiservices.Adapters.PhotoAdapter;
 import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
 import com.example.a77011_40_05.proxiservices.Adapters.UserAdapter;
-import com.example.a77011_40_05.proxiservices.Entities.Prestation;
 import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
-import com.example.a77011_40_05.proxiservices.Utils.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
-
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
-import static com.example.a77011_40_05.proxiservices.Utils.Constants._FRAG_ACCOUNT_GALLERY;
-import static com.example.a77011_40_05.proxiservices.Utils.Constants._FRAG_ACCOUNT_PROFILE_PICS;
 
 
 public class SearchFragment extends Fragment {

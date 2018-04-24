@@ -39,7 +39,7 @@ public class CategoryPrestationHolder extends RecyclerView.ViewHolder {
                 if(activity !=null){
                     HomeActivity home = (HomeActivity) activity;
                     Bundle params = new Bundle();
-                    params.putInt("idPrestation", categoryPrestation.getId());
+                    params.putInt("idCategoryPrestation", categoryPrestation.getId());
                     home.changeFragment(Constants._FRAG_PRESTATION_SEARCH,params);
                 }
             }
