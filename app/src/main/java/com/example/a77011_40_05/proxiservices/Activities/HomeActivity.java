@@ -177,7 +177,6 @@ public class HomeActivity extends AppCompatActivity
 
 
         return true;
-
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

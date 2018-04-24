@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.example.a77011_40_05.proxiservices.Adapters.MyPagerAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.R;
@@ -38,10 +39,9 @@ public class ProposeFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static ProposeFragment newInstance() {
+    public static ProposeFragment newInstance(Bundle args) {
         ProposeFragment fragment = new ProposeFragment();
-
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -65,13 +65,17 @@ public class ProposeFragment extends Fragment {
 
         viewPager=(ViewPager)view.findViewById(R.id.pager);
 
-
         //getSupportFragmentManager()));
         viewPager.setAdapter(new MyPagerAdapter(fragmentActivity.getSupportFragmentManager()));
 
+        // Bind the tabs to the ViewPager
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
+        tabs.setViewPager(viewPager);
 
         viewPager.setPageTransformer(false, new ZoomPageTransformer());
         viewPager.setPageTransformer(false, new DepthPageTransform());
+
+        //viewPager.On page change ??
 
      
         return view;

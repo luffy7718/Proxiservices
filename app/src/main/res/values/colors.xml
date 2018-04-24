@@ -6,4 +6,5 @@
     <color name="colorGradientCenter">#6679f4</color>
     <color name="colorGradientStart">@color/colorPrimaryDark</color>
     <color name="colorAlpha0">#00ffffff</color>
+
 </resources>
