@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.a77011_40_05.proxiservices.Adapters.CategoryPrestationAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
@@ -27,7 +28,7 @@ public class HomeFragment extends Fragment {
     RecyclerView rvwHomeFragment;
     Context context;
     CategoriesPrestations categoriesPrestations;
-Button btnAllServices;
+    Button btnAllServices;
 
     FragmentManager fragmentManager;
 
@@ -74,6 +75,8 @@ Button btnAllServices;
                 loadFragment(prestationsSearchFragment);
             }
         });
+
+
 
 
         return view;

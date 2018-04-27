@@ -38,14 +38,7 @@ public class Constants {
     public final static int _PASSWORD_REQUEST = 2;
 
     public static final String APP_NAME = "ProxiServices";
-    //connexion Ianis
 
-    //public static final String _URL_WEBSERVICE =  "http://10.75.25.103:8080/serviceweb/";
-
-    //connexion Pierre
-    public static final String _URL_WEBSERVICE =  "http://10.75.25.115:8080/proxiservices/";
-
-    //connexion hors afpa
-    //public static final String _URL_WEBSERVICE =  "http://192.168.1.87/proxiservices/";
+    public static final String _URL_WEBSERVICE =  "http://10.75.25.118:8080/proxiservices/";
 
 }

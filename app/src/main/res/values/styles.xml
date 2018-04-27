@@ -42,4 +42,9 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="tabTextAppearance">@style/PagerTabStripText</item>
     </style>
+
+    <declare-styleable name="SectionWidget">
+        <attr name="headText" format="string"/>
+        <attr name="headSize" format="dimension"/>
+    </declare-styleable>
 </resources>
