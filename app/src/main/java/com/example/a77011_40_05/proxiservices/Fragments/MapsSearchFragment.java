@@ -14,18 +14,28 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
+import com.example.a77011_40_05.proxiservices.Adapters.MyPagerAdapter;
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
+import com.example.a77011_40_05.proxiservices.Entities.Prestation;
 import com.example.a77011_40_05.proxiservices.R;
+import com.example.a77011_40_05.proxiservices.Utils.App;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
+import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,37 +51,61 @@ import java.util.List;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, LocationListener{
+public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap Maps;
     double latitude = 48.866667;
     double longitude = 2.333333;
+    double latitudePrestations=0;
+    double longitudePrestations=0;
     Location location;
+    Location locationPrestations;
     private Circle circle;
     Context context;
     MapView mapView;
     AppCompatSeekBar progressRadius;
     TextView radiusText;
-    int MaxValue =40;
+    int MaxValue = 40;
     Spinner spinCategory;
-
+    MyPagerAdapter myPagerAdapter;
+    //FILTERS
+    int idCategoryPrestation = -1;
+    private int min = 1;
+    LatLng mycoords;
+    LatLng mycoordsPrestations;
+    Button btnReturn;
+    Activity activity;
     private OnFragmentInteractionListener mListener;
-
     public MapsSearchFragment() {
         // Required empty public constructor
     }
 
-    public static MapsSearchFragment newInstance(int zoom, List<Location> locations) {
+    public static MapsSearchFragment newInstance(Bundle args) {
+
 
         MapsSearchFragment fragment = new MapsSearchFragment();
 
-
+        fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        if (getArguments() != null) {
+            if(getArguments().containsKey("latitude")&& getArguments().containsKey("longitude")){
+
+                latitudePrestations = getArguments().getDouble("latitude");
+                longitudePrestations = getArguments().getDouble("longitude");
+
+
+            }
+
+        }
 
     }
 
@@ -79,28 +113,44 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_maps_search, container, false);
+        final View view = inflater.inflate(R.layout.fragment_maps_search, container, false);
 
         mapView = (MapView) view.findViewById(R.id.mapView);
         progressRadius = (AppCompatSeekBar) view.findViewById(R.id.progress);
+        btnReturn=(Button)view.findViewById(R.id.btnReturn);
+
+        btnReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                    HomeActivity home = (HomeActivity) activity;
+                    Bundle params = new Bundle();
+                   /* Gson gson=new Gson();
+                    String json=gson.toJson(prestation.getClass());*/
+                    home.changeFragment(Constants._FRAG_PRESTATION_SEARCH, params);
+
+            }
+        });
+
         progressRadius.setMax(MaxValue);
         //progress.setMin(MinValue); à partir de l'api 26
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); //needed to get the map to display immediately
         radiusText = (TextView) view.findViewById(R.id.radius_text);
+        radiusText.setVisibility(View.INVISIBLE);
         //gets to googlemap from the mapview and does initialization stuff
         mapView.getMapAsync(this);
-
+        progressRadius.setProgress(min);
         spinCategory = (Spinner) view.findViewById(R.id.spinCategory);
-
-        List<String>categories=new ArrayList<>();
-        categories.add("Jardinage");
-        categories.add("Bricolage");
-        categories.add("Transport");
-        categories.add("Education");
-        categories.add("Cuisine");
-        categories.add("Nettoyage");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,categories);
+        List<String> categories = new ArrayList<>();
+        categories.add("Tous");
+        CategoriesPrestations cps = App.getCategoriesPrestations();
+        for (int i = 0; i < cps.size(); i++) {
+            categories.add(cps.get(i).getName());
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout
+                .simple_spinner_item, categories);
 
         // Drop down style will be listview with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
@@ -108,17 +158,14 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         // attaching data adapter to spinner
         spinCategory.setAdapter(dataAdapter);
 
+        if (idCategoryPrestation != -1) {
+            spinCategory.setSelection(idCategoryPrestation);
+        }
+
         spinCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-
-
-
-                    /*Toast.makeText(context, toString(),
-                            Toast.LENGTH_SHORT).show();*/
-
-                Toast.makeText(context, "Selected",
-                        Toast.LENGTH_SHORT).show();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(context, "Selected",Toast.LENGTH_SHORT).show();
+                idCategoryPrestation = position;
 
             }
 
@@ -127,6 +174,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
             }
         });
+
 
 
 
@@ -144,7 +192,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         this.context = context;
 
     }
@@ -155,9 +202,11 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         super.onAttach(activity);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            this.context = activity.getBaseContext();
+            context = activity.getBaseContext();
         }
+        this.activity = activity;
     }
+
 
     @Override
     public void onDetach() {
@@ -166,19 +215,28 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
 
     @Override
-    public void onMapReady( final GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
+
 
         Maps = googleMap;
         Maps.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission
+                .ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             Maps.setMyLocationEnabled(true);
 
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService
+                    (LOCATION_SERVICE);
 
             // todo: à partir de l'api 23
-            //LocationManager locationManager = (LocationManager)getContext().getSystemService(LOCATION_SERVICE);
+            //LocationManager locationManager = (LocationManager)getContext().getSystemService
+            // (LOCATION_SERVICE);
+
+
             String locationType = "";
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
                 locationType = LocationManager.GPS_PROVIDER;
@@ -187,18 +245,23 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             else locationType = LocationManager.PASSIVE_PROVIDER;
 
             if (!locationType.isEmpty()) {
-                // locationManager.requestLocationUpdates(locationType, MIN_TIME_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                // locationManager.requestLocationUpdates(locationType, MIN_TIME_UPDATES,
+                // MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                 location = locationManager.getLastKnownLocation(locationType);
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+
                 }
+
+
+
             }
 
 
 
-            final LatLng mycoords = new LatLng(location.getLatitude(), location.getLongitude());
-
+           mycoords = new LatLng(location.getLatitude(), location.getLongitude());
+            mycoordsPrestations = new LatLng(latitudePrestations, longitudePrestations);
 
             //création d'un cercle
 
@@ -209,24 +272,25 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             circle = Maps.addCircle(co.center(mycoords).radius(1000.0).fillColor(0x66aaaFFF));
             //ajout du marqueur
             Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis Ici"));
-
+            Maps.addMarker(new MarkerOptions().position(mycoordsPrestations).title("Coucou, la prestation est ici"));
             //mouvement de la caméra en fonction du lvl de zoom
             Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     co.getCenter(), getZoomLevel(circle)));
 
-               //utilisation du seekbar rayon
+            //utilisation du seekbar rayon
             progressRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-                public void onProgressChanged(SeekBar seekBar, int progressRadius, boolean fromUser) {
-                    //méthode pour avant l'api 26 pour le minimum
-                    int min = 1;
+                public void onProgressChanged(SeekBar seekBar, int progressRadius, boolean
+                        fromUser) {
 
 
-                    if (progressRadius <= min) {
+                    radiusText.setVisibility(View.VISIBLE);
+                    if (progressRadius < min) {
 
-                        seekBar.setProgress(min);
-
+                        Toast.makeText(context, "erreur 0km n'existe pas", Toast.LENGTH_SHORT)
+                                .show();
                     }
+
 
                     //changer le cercle grace au seekbar rayon
                     circle.setRadius(progressRadius);
@@ -236,7 +300,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
                     radiusText.setText(String.valueOf((progressRadius)) + "Km");
                     //nettoyer la maps
                     Maps.clear();
-                    Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis Ici"));
+                    Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis " +
+                            "Ici"));
 
                     final CircleOptions circleoptions = new CircleOptions();
 
@@ -245,7 +310,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
                             .radius((progressRadius + 2) * 500)
                             .strokeWidth(0)
                             .fillColor(0x66aaaFFF));
-                    Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter(), getZoomLevel(circle)));
+                    Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
+                            (), getZoomLevel(circle)));
 
 
                 }
@@ -265,8 +331,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         }
 
     }
-
-
 
 
 
@@ -294,6 +358,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onLocationChanged(Location location) {
 
+        Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, la prestation se trouve ici"));
     }
 
     @Override
@@ -310,8 +375,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     public void onProviderDisabled(String s) {
 
     }
-
-
 
 
     public interface OnFragmentInteractionListener {

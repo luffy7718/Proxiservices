@@ -29,6 +29,7 @@ public class PagePrestationsListFragment extends Fragment {
     PrestationAdapter prestationAdapter;
     Prestations prestations;
     RecyclerView rvwPrestationsList;
+    Activity activity;
 
     public static PagePrestationsListFragment newInstance(int mode) {
         Bundle args = new Bundle();
@@ -47,19 +48,20 @@ public class PagePrestationsListFragment extends Fragment {
         rvwPrestationsList = view.findViewById(R.id.rvwPrestationsList);
 
         prestations = new Prestations();
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false);
         rvwPrestationsList.setLayoutManager(layoutManager);
         rvwPrestationsList.setItemAnimator(new DefaultItemAnimator());
-        prestationAdapter = new PrestationAdapter(prestations,context);
+        prestationAdapter = new PrestationAdapter(prestations, context,getActivity());
         rvwPrestationsList.setAdapter(prestationAdapter);
 
         return view;
     }
 
 
-    public void refreshPrestationsList(Prestations newList){
+    public void refreshPrestationsList(Prestations newList) {
         this.prestations = newList;
-        prestationAdapter = new PrestationAdapter(prestations,context);
+        prestationAdapter = new PrestationAdapter(prestations, context,getActivity());
         rvwPrestationsList.setAdapter(prestationAdapter);
     }
 
@@ -75,7 +77,7 @@ public class PagePrestationsListFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             context = activity.getBaseContext();
         }
     }

@@ -4,11 +4,31 @@ public class Prestation {
 
     int idPrestation;
     int idUser;
-    int idCategoryPerstation;
+    int idCategoryPrestation;
     String name;
     String firstname;
     String description;
     String path;
+    double latitude;
+    double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+
+
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public int getIdPrestation() {
         return idPrestation;
@@ -26,12 +46,12 @@ public class Prestation {
         this.idUser = idUser;
     }
 
-    public int getIdCategoryPerstation() {
-        return idCategoryPerstation;
+    public int getIdCategoryPrestation() {
+        return idCategoryPrestation;
     }
 
-    public void setIdCategoryPerstation(int idCategoryPerstation) {
-        this.idCategoryPerstation = idCategoryPerstation;
+    public void setIdCategoryPrestation(int idCategoryPrestation) {
+        this.idCategoryPrestation = idCategoryPrestation;
     }
 
     public String getName() {

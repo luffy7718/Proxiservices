@@ -21,11 +21,10 @@ public class CategoryPrestationAdapter extends RecyclerView.Adapter<CategoryPres
 
     CategoriesPrestations categoriesPrestations;
     Context context;
-    Activity activity = null;
-    public CategoryPrestationAdapter(CategoriesPrestations categoriesPrestations, Context context) {
-        this.categoriesPrestations = categoriesPrestations;
-        this.context = context;
-    }
+    Activity activity;
+
+
+
 
     public CategoryPrestationAdapter(CategoriesPrestations categoriesPrestations, Context context, Activity activity) {
         this.categoriesPrestations = categoriesPrestations;

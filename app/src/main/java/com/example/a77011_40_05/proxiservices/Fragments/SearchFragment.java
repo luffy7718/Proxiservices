@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
 public class SearchFragment extends Fragment {
 
     Context context;
-
+Activity activity;
     String search;
 
     RecyclerView rvwSearchUsers;
@@ -66,10 +66,10 @@ public class SearchFragment extends Fragment {
                         Gson gson = new Gson();
                         JsonObject json = gson.fromJson(result,JsonObject.class);
                         if(json.has("services")){
-                            Log.e(Constants._TAG_LOG,"Services: "+json.get("services").getAsString());
+                            Log.e(Constants._TAG_LOG,"Services: "+json.get("services"));
                             try{
-                                prestations = gson.fromJson(json.get("services").getAsString(),Prestations.class);
-                                prestationAdapter = new PrestationAdapter(prestations,context);
+                                prestations = gson.fromJson(json.get("services"),Prestations.class);
+                                prestationAdapter = new PrestationAdapter(prestations,context,activity);
                                 rvwSearchServices.setAdapter(prestationAdapter);
                             }catch (Exception e){
                                 Log.e(Constants._TAG_LOG,"ERROR "+e.getMessage());
@@ -78,9 +78,9 @@ public class SearchFragment extends Fragment {
                         }
 
                         if(json.has("users")){
-                            Log.e(Constants._TAG_LOG,"Users: "+json.get("users").getAsString());
+                            Log.e(Constants._TAG_LOG,"Users: "+json.get("users"));
                             try{
-                                users = gson.fromJson(json.get("users").getAsString(),Users.class);
+                                users = gson.fromJson(json.get("users"),Users.class);
                                 userAdapter = new UserAdapter(users,context);
                                 rvwSearchUsers.setAdapter(userAdapter);
                             }catch (Exception e){
@@ -97,7 +97,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void refresh() {
-        prestationAdapter = new PrestationAdapter(prestations,context);
+        prestationAdapter = new PrestationAdapter(prestations,context,activity);
         rvwSearchServices.setAdapter(prestationAdapter);
     }
 
@@ -112,7 +112,7 @@ public class SearchFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         rvwSearchServices.setLayoutManager(layoutManager);
         rvwSearchServices.setItemAnimator(new DefaultItemAnimator());
-        prestationAdapter = new PrestationAdapter(prestations,context);
+        prestationAdapter = new PrestationAdapter(prestations,context,activity);
         rvwSearchServices.setAdapter(prestationAdapter);
 
         users = new Users();

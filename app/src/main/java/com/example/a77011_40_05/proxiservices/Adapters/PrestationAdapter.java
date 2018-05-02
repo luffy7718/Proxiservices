@@ -1,5 +1,6 @@
 package com.example.a77011_40_05.proxiservices.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Entities.Photo;
 import com.example.a77011_40_05.proxiservices.Entities.Photos;
 import com.example.a77011_40_05.proxiservices.Entities.Prestation;
@@ -25,9 +27,14 @@ public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
 
     Prestations prestations;
     Context context;
-    public PrestationAdapter(Prestations prestations,Context context) {
-        this.context = context;
+    Activity activity;
+
+
+
+    public PrestationAdapter(Prestations prestations, Context context, Activity activity) {
         this.prestations = prestations;
+        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -40,7 +47,7 @@ public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
     @Override
     public void onBindViewHolder(PrestationHolder holder, int position) {
         Prestation prestation = prestations.get(position);
-        holder.setPrestation(prestation,context);
+        holder.setPrestation(prestation,context,activity);
 
     }
 

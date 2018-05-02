@@ -38,4 +38,5 @@ dependencies {
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    implementation 'com.mikhaellopez:circularimageview:3.0.2'
 }

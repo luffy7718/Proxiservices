@@ -6,7 +6,7 @@ package com.example.a77011_40_05.proxiservices.Utils;
 
 public class Constants {
 
-    public final static String[] _LOGO_LIST = new String[]{null,"logo_jardinage","logo_menage","logo_enseignement"};
+    public final static String[] _LOGO_LIST = new String[]{null,"logo_jardinage","logo_menage","logo_enseignement","logo_cuisine","transport","bricolage"};
 
     //GENERAL
     public static final String SHARED_PREFERENCE = "ShareData" ;
@@ -43,7 +43,7 @@ public class Constants {
     //public static final String _URL_WEBSERVICE =  "http://10.75.25.103:8080/serviceweb/";
 
     //connexion Pierre
-    public static final String _URL_WEBSERVICE =  "http://10.75.25.115:8080/proxiservices/";
+    public static final String _URL_WEBSERVICE =  "http://10.75.25.40:8080/proxiservices/";
 
     //connexion hors afpa
     //public static final String _URL_WEBSERVICE =  "http://192.168.1.87/proxiservices/";

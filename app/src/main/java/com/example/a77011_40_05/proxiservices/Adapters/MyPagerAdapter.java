@@ -11,7 +11,8 @@ import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class MyPagerAdapter extends FragmentStatePagerAdapter {//le state c'est pour avoir fragments ilimité
+public class MyPagerAdapter extends FragmentStatePagerAdapter {//le state c'est pour avoir
+// fragments ilimité
 
     PagePrestationsListFragment propose;
     PagePrestationsListFragment request;
@@ -25,7 +26,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {//le state c'est 
     @Override
     public Fragment getItem(int position) {
 
-        switch (position){
+        switch (position) {
             case 0:
                 return propose;
             case 1:
@@ -41,33 +42,35 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {//le state c'est 
     }
 
     public CharSequence getPageTitle(int position) {
-        String tabtitles[] = new String[] { "proposition", "demande" };
+        String tabtitles[] = new String[]{"proposition", "demande"};
         return tabtitles[position];
     }
 
-    public void reloadPrestations(String result){
-        if(!result.isEmpty()){
+    public void reloadPrestations(String result) {
+        if (!result.isEmpty()) {
             //Log.e(Constants._TAG_LOG,"Search for "+search+": "+result);
             Gson gson = new Gson();
-            JsonObject json = gson.fromJson(result,JsonObject.class);
-            if(json.has("proposes")){
-                Log.e(Constants._TAG_LOG,"Proposes: "+json.get("proposes"));
-                try{
-                    Prestations prestations = gson.fromJson(json.get("proposes"),Prestations.class);
+            JsonObject json = gson.fromJson(result, JsonObject.class);
+            if (json.has("proposes")) {
+                Log.e(Constants._TAG_LOG, "Proposes: " + json.get("proposes"));
+                try {
+                    Prestations prestations = gson.fromJson(json.get("proposes"), Prestations
+                            .class);
                     propose.refreshPrestationsList(prestations);
-                }catch (Exception e){
-                    Log.e(Constants._TAG_LOG,"ERROR "+e.getMessage());
+                } catch (Exception e) {
+                    Log.e(Constants._TAG_LOG, "ERROR " + e.getMessage());
                 }
 
             }
 
-            if(json.has("requests")){
-                Log.e(Constants._TAG_LOG,"Requests: "+json.get("requests"));
-                try{
-                    Prestations prestations = gson.fromJson(json.get("requests"),Prestations.class);
+            if (json.has("requests")) {
+                Log.e(Constants._TAG_LOG, "Requests: " + json.get("requests"));
+                try {
+                    Prestations prestations = gson.fromJson(json.get("requests"), Prestations
+                            .class);
                     request.refreshPrestationsList(prestations);
-                }catch (Exception e){
-                    Log.e(Constants._TAG_LOG,"ERROR "+e.getMessage());
+                } catch (Exception e) {
+                    Log.e(Constants._TAG_LOG, "ERROR " + e.getMessage());
                 }
 
             }

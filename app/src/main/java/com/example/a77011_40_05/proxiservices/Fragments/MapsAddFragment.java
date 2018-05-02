@@ -24,8 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
+import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.example.a77011_40_05.proxiservices.Utils.DataParser;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -68,7 +70,8 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
     Button btnClearRoute;
     Button btnTraceRoute;
     PolylineOptions polylineOptions;
-
+    Activity activity;
+    Button btnReturn;
 
     private OnFragmentInteractionListener mListener;
 
@@ -127,6 +130,23 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
             }
         });
 
+        btnReturn=(Button)view.findViewById(R.id.btnReturn);
+
+        btnReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                HomeActivity home = (HomeActivity) activity;
+                Bundle params = new Bundle();
+                   /* Gson gson=new Gson();
+                    String json=gson.toJson(prestation.getClass());*/
+                home.changeFragment(Constants._FRAG_HOME, params);
+
+
+
+            }
+        });
         FloatingActionButton fbSave = view.findViewById(R.id.fbSave);
         fbSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +224,7 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             this.context = activity.getBaseContext();
         }
+        this.activity = activity;
     }
 
     @Override

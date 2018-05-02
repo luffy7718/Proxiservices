@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.a77011_40_05.proxiservices.Adapters.MyPagerAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
+import com.example.a77011_40_05.proxiservices.Entities.Prestation;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
@@ -39,6 +40,7 @@ public class PrestationsSearchFragment extends Fragment {
     MyPagerAdapter myPagerAdapter;
     FragmentActivity fragmentActivity;
     App app;
+   Prestation prestation;
 
     //FILTERS
     int idCategoryPrestation = -1;
@@ -144,6 +146,7 @@ public class PrestationsSearchFragment extends Fragment {
         }
         asyncCallWS.execute();
     }
+
 
     @TargetApi(23)
     @Override

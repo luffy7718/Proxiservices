@@ -19,17 +19,11 @@
     <item
         android:id="@+id/action_AddCarte"
         android:icon="@drawable/ic_action_routemaps"
-        android:title="Quartier"
+        android:title="TraceRoute"
         app:showAsAction="always" ></item>
     <item
         android:id="@+id/action_SearchCarte"
         android:icon="@drawable/search_location"
-        android:title="Quartier"
+        android:title="Search"
         app:showAsAction="always" ></item>
-    <item android:title="SousMenu" >
-        <menu >
-            <item android:title="Item" />
-            <item android:title="Item" />
-        </menu>
-    </item>
 </menu>

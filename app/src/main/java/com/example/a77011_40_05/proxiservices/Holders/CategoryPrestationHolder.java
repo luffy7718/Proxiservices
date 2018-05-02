@@ -22,6 +22,7 @@ public class CategoryPrestationHolder extends RecyclerView.ViewHolder {
     public final TextView txtName;
     public final ImageView imgPresta;
 
+
     public CategoryPrestationHolder(View view){
         super(view);
 

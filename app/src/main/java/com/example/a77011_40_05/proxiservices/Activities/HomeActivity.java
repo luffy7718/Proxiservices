@@ -271,9 +271,8 @@ public class HomeActivity extends AppCompatActivity
                 frag = mapsFragment;
                 break;
             case Constants._FRAG_MAPS_SEARCH:
-                if(mapsSearchFragment == null){
-                    mapsSearchFragment = new MapsSearchFragment();
-                }
+
+                    mapsSearchFragment =  MapsSearchFragment.newInstance(params);
                 frag = mapsSearchFragment;
                 break;
 

@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Entities.Erreur;
 import com.example.a77011_40_05.proxiservices.Entities.Erreurs;
+import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.Entities.Users;
 import com.google.gson.Gson;
 
@@ -18,6 +19,23 @@ public class App extends Application {
     public static Erreurs erreurs;
     private static Users users;
     private static CategoriesPrestations categoriesPrestations;
+    private static Prestations prestations;
+
+    public static Erreurs getErreurs() {
+        return erreurs;
+    }
+
+    public static void setErreurs(Erreurs erreurs) {
+        App.erreurs = erreurs;
+    }
+
+    public static Prestations getPrestations() {
+        return prestations;
+    }
+
+    public static void setPrestations(Prestations prestations) {
+        App.prestations = prestations;
+    }
 
     public static Users getUsers() {
         return users;
