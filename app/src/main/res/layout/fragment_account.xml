@@ -60,6 +60,32 @@
                 android:visibility="gone"
                 android:text="Mes Photos" />
 
+            <com.example.a77011_40_05.proxiservices.CustomViews.SectionView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:headText="Mes demandes"
+                app:headIcon="@drawable/ic_action_collapse">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvwMyRequestsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.example.a77011_40_05.proxiservices.CustomViews.SectionView>
+
+            <com.example.a77011_40_05.proxiservices.CustomViews.SectionView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:headText="Mes propositions"
+                app:headIcon="@drawable/ic_action_collapse">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvwMyProposesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.example.a77011_40_05.proxiservices.CustomViews.SectionView>
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

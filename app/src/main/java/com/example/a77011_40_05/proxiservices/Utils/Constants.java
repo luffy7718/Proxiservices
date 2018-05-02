@@ -39,6 +39,6 @@ public class Constants {
 
     public static final String APP_NAME = "ProxiServices";
 
-    public static final String _URL_WEBSERVICE =  "http://10.75.25.118:8080/proxiservices/";
+    public static final String _URL_WEBSERVICE =  "http://10.75.25.36:8080/proxiservices/";
 
 }

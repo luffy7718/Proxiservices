@@ -62,13 +62,13 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onResultCallBack(String result) {
                     if(!result.isEmpty()){
-                        //Log.e(Constants._TAG_LOG,"Search for "+search+": "+result);
+                        Log.e(Constants._TAG_LOG,"Search for "+search+": "+result);
                         Gson gson = new Gson();
                         JsonObject json = gson.fromJson(result,JsonObject.class);
                         if(json.has("services")){
-                            Log.e(Constants._TAG_LOG,"Services: "+json.get("services").getAsString());
+                            Log.e(Constants._TAG_LOG,"Services: "+json.get("services"));
                             try{
-                                prestations = gson.fromJson(json.get("services").getAsString(),Prestations.class);
+                                prestations = gson.fromJson(json.get("services"),Prestations.class);
                                 prestationAdapter = new PrestationAdapter(prestations,context);
                                 rvwSearchServices.setAdapter(prestationAdapter);
                             }catch (Exception e){
@@ -78,9 +78,9 @@ public class SearchFragment extends Fragment {
                         }
 
                         if(json.has("users")){
-                            Log.e(Constants._TAG_LOG,"Users: "+json.get("users").getAsString());
+                            Log.e(Constants._TAG_LOG,"Users: "+json.get("users"));
                             try{
-                                users = gson.fromJson(json.get("users").getAsString(),Users.class);
+                                users = gson.fromJson(json.get("users"),Users.class);
                                 userAdapter = new UserAdapter(users,context);
                                 rvwSearchUsers.setAdapter(userAdapter);
                             }catch (Exception e){
