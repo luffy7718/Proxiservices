@@ -247,9 +247,8 @@ public class HomeActivity extends AppCompatActivity
                 frag = settingsFragment;
                 break;
             case Constants._FRAG_ACCOUNT:
-                if(accountFragment == null){
-                    accountFragment = new AccountFragment();
-                }
+                accountFragment = new AccountFragment();
+
                 frag = accountFragment;
                 break;
             case Constants._FRAG_ACCOUNT_PROFILE_PICS:

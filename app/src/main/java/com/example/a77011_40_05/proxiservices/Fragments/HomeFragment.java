@@ -16,10 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.a77011_40_05.proxiservices.Adapters.CategoryPrestationAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
 
@@ -28,7 +28,6 @@ public class HomeFragment extends Fragment {
     RecyclerView rvwHomeFragment;
     Context context;
     CategoriesPrestations categoriesPrestations;
-    Prestations prestations;
     Button btnAllServices;
 
     FragmentManager fragmentManager;
@@ -50,7 +49,6 @@ public class HomeFragment extends Fragment {
         context = getActivity().getApplicationContext();
         App app = (App) getActivity().getApplication();
         categoriesPrestations = app.getCategoriesPrestations();
-        prestations=app.getPrestations();
         fragmentManager = getFragmentManager();
     }
 
@@ -61,25 +59,24 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         rvwHomeFragment = view.findViewById(R.id.rvwHomeFragment);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,
-                LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
 
-        RecyclerView.LayoutManager layoutManager2 = new GridLayoutManager(context, 3);
+        RecyclerView.LayoutManager layoutManager2 = new GridLayoutManager(context,3);
 
         rvwHomeFragment.setLayoutManager(layoutManager2);
         rvwHomeFragment.setItemAnimator(new DefaultItemAnimator());
-        rvwHomeFragment.setAdapter(new CategoryPrestationAdapter(categoriesPrestations, context,
-                getActivity()));
-        btnAllServices = (Button) view.findViewById(R.id.btnAllServices);
+        rvwHomeFragment.setAdapter(new CategoryPrestationAdapter(categoriesPrestations,context,getActivity()));
+        btnAllServices=(Button)view.findViewById(R.id.btnAllServices);
 
         btnAllServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PrestationsSearchFragment prestationsSearchFragment = new
-                        PrestationsSearchFragment();
+                PrestationsSearchFragment prestationsSearchFragment = new PrestationsSearchFragment();
                 loadFragment(prestationsSearchFragment);
             }
         });
+
+
 
 
         return view;
@@ -97,14 +94,14 @@ public class HomeFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             context = activity.getBaseContext();
         }
     }
 
     public void loadFragment(Fragment fragment) {
         fragmentManager.beginTransaction()
-                .replace(R.id.frtHome, fragment)
+                .replace(R.id.frtHome,fragment)
                 .addToBackStack(null)
                 .commit();
     }
