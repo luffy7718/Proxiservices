@@ -17,9 +17,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -56,8 +58,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     private GoogleMap Maps;
     double latitude = 48.866667;
     double longitude = 2.333333;
-    double latitudePrestations=0;
-    double longitudePrestations=0;
+    double latitudePrestations = 0;
+    double longitudePrestations = 0;
     Location location;
     private Circle circle;
     Context context;
@@ -68,7 +70,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     Spinner spinCategory;
     //FILTERS
     int idCategoryPrestation = -1;
-    private int min = 1;
     LatLng mycoords;
     LatLng mycoordsPrestations;
 
@@ -89,14 +90,13 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         if (getArguments() != null) {
-            if(getArguments().containsKey("latitude")&& getArguments().containsKey("longitude")){
+            if (getArguments().containsKey("latitude") && getArguments().containsKey("longitude")) {
 
                 latitudePrestations = getArguments().getDouble("latitude");
                 longitudePrestations = getArguments().getDouble("longitude");
@@ -107,7 +107,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         }
 
     }
-
 
 
     @Override
@@ -122,15 +121,14 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         progressRadius = (AppCompatSeekBar) view.findViewById(R.id.progress);
 
 
-        progressRadius.setMax(MaxValue);
+        progressRadius.setMax(MaxValue - 1);
         //progress.setMin(MinValue); à partir de l'api 26
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); //needed to get the map to display immediately
         radiusText = (TextView) view.findViewById(R.id.radius_text);
-        radiusText.setVisibility(View.INVISIBLE);
+
         //gets to googlemap from the mapview and does initialization stuff
         mapView.getMapAsync(this);
-        progressRadius.setProgress(min);
         spinCategory = (Spinner) view.findViewById(R.id.spinCategory);
         List<String> categories = new ArrayList<>();
         categories.add("Tous");
@@ -165,11 +163,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         });
 
 
-
-
         return view;
     }
-
 
 
     @TargetApi(23)
@@ -229,7 +224,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             else locationType = LocationManager.PASSIVE_PROVIDER;
 
             if (!locationType.isEmpty()) {
-                Log.e(Constants._TAG_LOG,"locationType: "+locationType);
+                Log.e(Constants._TAG_LOG, "locationType: " + locationType);
                 // locationManager.requestLocationUpdates(locationType, MIN_TIME_UPDATES,
                 // MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                 location = locationManager.getLastKnownLocation(locationType);
@@ -240,8 +235,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
                 }
 
 
-
             }
+
 
             mycoords = new LatLng(latitude, longitude);
             mycoordsPrestations = new LatLng(latitudePrestations, longitudePrestations);
@@ -252,10 +247,11 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             //mouvement de la caméra au centre de ma position
             Maps.moveCamera(CameraUpdateFactory.newLatLng(mycoords));
             //paramétre du cercle
-            circle = Maps.addCircle(co.center(mycoords).radius(1000.0).fillColor(0x66aaaFFF));
+            circle = Maps.addCircle(co.center(mycoords).radius(1000).fillColor(0x66aaaFFF));
             //ajout du marqueur
             Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis Ici"));
-            Maps.addMarker(new MarkerOptions().position(mycoordsPrestations).title("Coucou, la prestation est ici"));
+            Maps.addMarker(new MarkerOptions().position(mycoordsPrestations).title("Coucou, la " +
+                    "prestation est ici"));
             //mouvement de la caméra en fonction du lvl de zoom
             Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     co.getCenter(), getZoomLevel(circle)));
@@ -265,16 +261,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
                 public void onProgressChanged(SeekBar seekBar, int progressRadius, boolean
                         fromUser) {
-
-
-                    radiusText.setVisibility(View.VISIBLE);
-                    if (progressRadius < min) {
-
-                        Toast.makeText(context, "erreur 0km n'existe pas", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-
+                    progressRadius++;
                     //changer le cercle grace au seekbar rayon
                     circle.setRadius(progressRadius);
 
@@ -288,15 +275,42 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
                     final CircleOptions circleoptions = new CircleOptions();
 
-                    circle = Maps.addCircle(circleoptions
-                            .center(mycoords)
-                            .radius((progressRadius + 2) * 500)
-                            .strokeWidth(0)
-                            .fillColor(0x66aaaFFF));
-                    Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
-                            (), getZoomLevel(circle)));
+
+                    if (progressRadius > 1) {
+
+                        circle = Maps.addCircle(circleoptions
+                                .center(mycoords)
+                                .radius((progressRadius + 2) * 500)
+                                .strokeWidth(0)
+                                .fillColor(0x66aaaFFF));
+                        Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
+                                (), getZoomLevel(circle)));
+
+                    }
+                    if (progressRadius == 1) {
+
+                        circle = Maps.addCircle(circleoptions
+                                .center(mycoords)
+                                .radius(1000)
+                                .strokeWidth(0)
+                                .fillColor(0x66aaaFFF));
+                        Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
+                                (), getZoomLevel(circle)));
+
+                    }
+                }
 
 
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        //Handle search key click
+                        return true;
+                    }
+                    if (actionId == EditorInfo.IME_ACTION_GO) {
+                        //Handle go key click
+                        return true;
+                    }
+                    return false;
                 }
 
                 @Override
@@ -314,8 +328,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         }
 
     }
-
-
 
 
     public void onPause() {
@@ -341,7 +353,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onLocationChanged(Location location) {
 
-        Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, la prestation se trouve ici"));
+        Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, la prestation se " +
+                "trouve ici"));
     }
 
     @Override
