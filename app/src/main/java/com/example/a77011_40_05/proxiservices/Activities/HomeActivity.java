@@ -32,6 +32,7 @@ import com.example.a77011_40_05.proxiservices.Fragments.HomeFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.MapsAddFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.MapsFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.MapsSearchFragment;
+import com.example.a77011_40_05.proxiservices.Fragments.PrestationEditFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.PrestationsSearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SearchFragment;
 import com.example.a77011_40_05.proxiservices.Fragments.SettingsFragment;
@@ -69,6 +70,7 @@ public class HomeActivity extends AppCompatActivity
     MapsSearchFragment mapsSearchFragment =null;
     PrestationsSearchFragment prestationsSearchFragment =null;
     SearchFragment searchFragment = null;
+    PrestationEditFragment prestationEditFragment = null;
 
 
 
@@ -191,6 +193,12 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home){
+            int end = fragmentManager.getBackStackEntryCount();
+            for (int i = 0; i<=end;i++){
+                Log.e(Constants._TAG_LOG,i+"/"+end);
+                fragmentManager.popBackStackImmediate();
+            }
+            Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
             changeFragment(Constants._FRAG_HOME,null);
         } else if (id == R.id.nav_account) {
             // Handle the camera action
@@ -301,6 +309,10 @@ public class HomeActivity extends AppCompatActivity
                 searchFragment = SearchFragment.newInstance(params);
                 frag = searchFragment;
                 break;
+            case Constants._FRAG_PRESTATION_EDIT:
+                prestationEditFragment = PrestationEditFragment.newInstance(params);
+                frag = prestationEditFragment;
+                break;
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);
                 break;
@@ -316,6 +328,7 @@ public class HomeActivity extends AppCompatActivity
         currentFragment = fragment;
         int backStackCount =fragmentManager.getBackStackEntryCount();
         String tag = "Frag"+backStackCount;
+
         fragmentManager.beginTransaction()
                 .replace(R.id.frtHome,fragment,tag)
                 .addToBackStack(tag)

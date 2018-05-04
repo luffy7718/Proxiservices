@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="10dp"
+    tools:context=".Fragments.MapsFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/myButton"
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Modifier"/>
+
+        <Button
+            style="@style/myButton"
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Annuler"/>
+
+    </LinearLayout>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <Spinner
+        android:id="@+id/spinCategory"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <EditText
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:hint="Je recherche ..."/>
+
+
+</LinearLayout>

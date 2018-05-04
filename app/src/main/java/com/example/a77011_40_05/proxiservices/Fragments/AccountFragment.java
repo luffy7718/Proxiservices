@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
 import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
+import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapterAccount;
 import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
@@ -41,8 +42,8 @@ public class AccountFragment extends Fragment {
 
     Prestations myRequests;
     Prestations myProposes;
-    PrestationAdapter myRequestsAdapter;
-    PrestationAdapter myProposesAdapter;
+    PrestationAdapterAccount myRequestsAdapter;
+    PrestationAdapterAccount myProposesAdapter;
 
     RecyclerView rvwMyRequestsList;
     RecyclerView rvwMyProposesList;
@@ -64,6 +65,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity();
     }
 
     @Override
@@ -107,14 +109,14 @@ public class AccountFragment extends Fragment {
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         rvwMyRequestsList.setLayoutManager(layoutManagerR);
         rvwMyRequestsList.setItemAnimator(new DefaultItemAnimator());
-        myRequestsAdapter = new PrestationAdapter(myRequests,context);
+        myRequestsAdapter = new PrestationAdapterAccount(myRequests,context);
         rvwMyRequestsList.setAdapter(myRequestsAdapter);
 
         myProposes = new Prestations();
         RecyclerView.LayoutManager layoutManagerP = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         rvwMyProposesList.setLayoutManager(layoutManagerP);
         rvwMyProposesList.setItemAnimator(new DefaultItemAnimator());
-        myProposesAdapter = new PrestationAdapter(myProposes,context);
+        myProposesAdapter = new PrestationAdapterAccount(myProposes,context);
         rvwMyProposesList.setAdapter(myProposesAdapter);
 
         loadMyPrestation();
@@ -133,7 +135,7 @@ public class AccountFragment extends Fragment {
                         Log.e(Constants._TAG_LOG,"Proposes: "+json.get("proposes"));
                         try{
                             myProposes = gson.fromJson(json.get("proposes"),Prestations.class);
-                            myProposesAdapter = new PrestationAdapter(myProposes,context);
+                            myProposesAdapter = new PrestationAdapterAccount(myProposes,context);
                             rvwMyProposesList.setAdapter(myProposesAdapter);
                             //myProposesAdapter.notifyDataSetChanged();
                         }catch (Exception e){
@@ -146,7 +148,7 @@ public class AccountFragment extends Fragment {
                         Log.e(Constants._TAG_LOG,"Requests: "+json.get("requests"));
                         try{
                             myRequests = gson.fromJson(json.get("requests"),Prestations.class);
-                            myRequestsAdapter= new PrestationAdapter(myRequests,context);
+                            myRequestsAdapter= new PrestationAdapterAccount(myRequests,context);
                             rvwMyRequestsList.setAdapter(myRequestsAdapter);
                             //myRequestsAdapter.notifyDataSetChanged();
                         }catch (Exception e){
@@ -161,22 +163,5 @@ public class AccountFragment extends Fragment {
         asyncCallWS.addParam("idUser",""+Session.getMyUser().getIdUser());
 
         asyncCallWS.execute();
-    }
-
-    @TargetApi(23)
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            context = activity.getBaseContext();
-        }
     }
 }

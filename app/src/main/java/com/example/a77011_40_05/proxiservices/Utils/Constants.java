@@ -24,6 +24,9 @@ public class Constants {
     public final static int _FRAG_MAPS_SEARCH = 7;
     public final static int _FRAG_MAPS_ADD = 8;
 
+
+    public final static int _FRAG_PRESTATION_EDIT = 40;
+
     public final static int _FRAG_SEARCH_TEXT = 100;
 
     //VIEW PAGER PRESTATIONS

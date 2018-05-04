@@ -54,6 +54,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity();
         if (getArguments() != null) {
             search = getArguments().getString("search");
         }
@@ -123,23 +124,6 @@ public class SearchFragment extends Fragment {
         rvwSearchUsers.setAdapter(userAdapter);
 
         return view;
-    }
-
-    @TargetApi(23)
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            context = activity.getBaseContext();
-        }
     }
 
 }

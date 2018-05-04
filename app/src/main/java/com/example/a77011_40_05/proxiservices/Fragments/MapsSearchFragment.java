@@ -257,9 +257,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
             }
 
-
-
-           mycoords = new LatLng(latitude, longitude);
+            mycoords = new LatLng(latitude, longitude);
             mycoordsPrestations = new LatLng(latitudePrestations, longitudePrestations);
 
             //création d'un cercle
