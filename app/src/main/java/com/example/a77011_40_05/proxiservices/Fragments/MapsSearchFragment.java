@@ -243,6 +243,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             else locationType = LocationManager.PASSIVE_PROVIDER;
 
             if (!locationType.isEmpty()) {
+                Log.e(Constants._TAG_LOG,"locationType: "+locationType);
                 // locationManager.requestLocationUpdates(locationType, MIN_TIME_UPDATES,
                 // MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                 location = locationManager.getLastKnownLocation(locationType);
@@ -258,7 +259,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
 
 
-           mycoords = new LatLng(location.getLatitude(), location.getLongitude());
+           mycoords = new LatLng(latitude, longitude);
             mycoordsPrestations = new LatLng(latitudePrestations, longitudePrestations);
 
             //création d'un cercle
