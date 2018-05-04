@@ -35,13 +35,7 @@ import static android.content.Context.LOCATION_SERVICE;
 public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
-
-    private static long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5;//en metres
-    private static long MIN_TIME_UPDATES = 1000 * 60 * 1;//en millisecondes (1 minutes)
-    boolean checkGps;
-    boolean checkNetwork;
     Context context;
-    String typePostion;
     private MapView mapView;
     private Marker marker;
     Location location;

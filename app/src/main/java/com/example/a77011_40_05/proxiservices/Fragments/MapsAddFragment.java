@@ -71,8 +71,7 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
     Button btnTraceRoute;
     PolylineOptions polylineOptions;
     Activity activity;
-    Button btnReturn;
-
+     LatLng mycoords;
     private OnFragmentInteractionListener mListener;
 
     public MapsAddFragment() {
@@ -123,30 +122,14 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
             public void onClick(View view) {
 
                 Maps.clear();
-
+                Maps.addMarker(new MarkerOptions().position(mycoords).title("Depart:"+latitude+" : "+longitude));
                 latLngfrom=null;
                 latLngto=null;
                 isFrom=true;
             }
         });
 
-        btnReturn=(Button)view.findViewById(R.id.btnReturn);
 
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                HomeActivity home = (HomeActivity) activity;
-                Bundle params = new Bundle();
-                   /* Gson gson=new Gson();
-                    String json=gson.toJson(prestation.getClass());*/
-                home.changeFragment(Constants._FRAG_HOME, params);
-
-
-
-            }
-        });
         FloatingActionButton fbSave = view.findViewById(R.id.fbSave);
         fbSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,25 +254,27 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
             Maps.moveCamera(CameraUpdateFactory.newLatLng(paris));
             Maps.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15));//min:2, max:21
 
-
+            mycoords = new LatLng(location.getLatitude(), location.getLongitude());
             // Setting a click event handler for the map
+
             Maps.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
                 @Override
                 public void onMapClick(LatLng latLng) {
                     if(isFrom)
                     {
-                        latLngfrom=latLng;
-                        Maps.addMarker(new MarkerOptions().position(latLng).title("Depart:"+latLng.latitude+" : "+latLng.longitude));
+                        latLngfrom=mycoords;
 
-                        //markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                        //Maps.addMarker(new MarkerOptions().position(mycoords).title("Depart:"+latLng.latitude+" : "+latLng.longitude));
+
+
                         isFrom=false;
                     }
                     else
                     {
                         latLngto=latLng;
                         Maps.addMarker(new MarkerOptions().position(latLng).title("Arrivé"+latLng.latitude+" : "+latLng.longitude));
-                        //markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+
                         isFrom=true;
                     }
 

@@ -38,12 +38,7 @@
             android:clickable="true"
             android:src="@drawable/common_full_open_on_phone" />
 
-        <Button
-            android:id="@+id/btnReturn"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Retour" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -71,7 +71,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     private int min = 1;
     LatLng mycoords;
     LatLng mycoordsPrestations;
-    Button btnReturn;
+
     Activity activity;
 
 
@@ -120,21 +120,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
         mapView = (MapView) view.findViewById(R.id.mapView);
         progressRadius = (AppCompatSeekBar) view.findViewById(R.id.progress);
-        btnReturn=(Button)view.findViewById(R.id.btnReturn);
 
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                    HomeActivity home = (HomeActivity) activity;
-                    Bundle params = new Bundle();
-                   /* Gson gson=new Gson();
-                    String json=gson.toJson(prestation.getClass());*/
-                    home.changeFragment(Constants._FRAG_PRESTATION_SEARCH, params);
-
-            }
-        });
 
         progressRadius.setMax(MaxValue);
         //progress.setMin(MinValue); à partir de l'api 26
