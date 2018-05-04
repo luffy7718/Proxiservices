@@ -1,10 +1,7 @@
 package com.example.a77011_40_05.proxiservices.Holders;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -13,15 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
-import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
-import com.example.a77011_40_05.proxiservices.Entities.Photo;
 import com.example.a77011_40_05.proxiservices.Entities.Prestation;
-import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
-import com.example.a77011_40_05.proxiservices.Utils.Functions;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -48,7 +39,7 @@ public class PrestationHolder extends RecyclerView.ViewHolder {
         btnSearch=(Button)view.findViewById(R.id.btnSearch);
     }
 
-    public void setPrestation(final Prestation prestation, final Context context, final Activity activity) {
+    public void setPrestation(final Prestation prestation, final Context context) {
         txtName.setText(prestation.getName() + " " + prestation.getFirstname());
         txtDescription.setText(prestation.getDescription());
         Picasso.with(context)
@@ -62,17 +53,14 @@ public class PrestationHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 Log.e("longitude :", String.valueOf(prestation.getLongitude()));
                 Log.e("latitude :", String.valueOf(prestation.getLatitude()));
-                if (activity != null) {
-                    HomeActivity home = (HomeActivity) activity;
+
+                    HomeActivity home = (HomeActivity) context;
                     Bundle params = new Bundle();
                    /* Gson gson=new Gson();
                     String json=gson.toJson(prestation.getClass());*/
                     params.putDouble("latitude", prestation.getLatitude());
                     params.putDouble("longitude", prestation.getLongitude());
                     home.changeFragment(Constants._FRAG_MAPS_SEARCH, params);
-
-
-                }
             }
         });
 

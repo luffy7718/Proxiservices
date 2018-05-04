@@ -18,10 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
 import com.example.a77011_40_05.proxiservices.Adapters.CategoryPrestationAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
+import com.example.a77011_40_05.proxiservices.Utils.Constants;
 
 public class HomeFragment extends Fragment {
 
@@ -30,7 +32,6 @@ public class HomeFragment extends Fragment {
     CategoriesPrestations categoriesPrestations;
     Button btnAllServices;
 
-    FragmentManager fragmentManager;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -49,11 +50,11 @@ public class HomeFragment extends Fragment {
         context = getActivity().getApplicationContext();
         App app = (App) getActivity().getApplication();
         categoriesPrestations = app.getCategoriesPrestations();
-        fragmentManager = getFragmentManager();
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -71,8 +72,9 @@ public class HomeFragment extends Fragment {
         btnAllServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PrestationsSearchFragment prestationsSearchFragment = new PrestationsSearchFragment();
-                loadFragment(prestationsSearchFragment);
+                HomeActivity home = (HomeActivity) getActivity();
+                home.changeFragment(Constants._FRAG_PRESTATION_SEARCH,null);
+
             }
         });
 
@@ -95,14 +97,9 @@ public class HomeFragment extends Fragment {
         super.onAttach(activity);
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            context = activity.getBaseContext();
+            this.context = activity.getBaseContext();
         }
     }
 
-    public void loadFragment(Fragment fragment) {
-        fragmentManager.beginTransaction()
-                .replace(R.id.frtHome,fragment)
-                .addToBackStack(null)
-                .commit();
-    }
+
 }

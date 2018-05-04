@@ -14,13 +14,16 @@ import com.google.gson.JsonObject;
 public class MyPagerAdapter extends FragmentStatePagerAdapter {//le state c'est pour avoir
 // fragments ilimité
 
-    PagePrestationsListFragment propose;
-    PagePrestationsListFragment request;
+    PagePrestationsListFragment propose ;
+    PagePrestationsListFragment request ;
+
 
     public MyPagerAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
+        Log.e(Constants._TAG_LOG,"MyPagerAdapter");
         propose = PagePrestationsListFragment.newInstance(0);
         request = PagePrestationsListFragment.newInstance(1);
+
     }
 
     @Override

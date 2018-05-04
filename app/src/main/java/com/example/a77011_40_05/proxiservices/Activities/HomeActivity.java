@@ -5,7 +5,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -41,6 +43,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 
@@ -48,13 +52,12 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Context context;
-    ViewPager viewPager;
-    Activity activity;
     TextView txtHeaderName;
     ImageView imgProfilePics;
-    Button btnSearch;
+
 
     //Fragments
+    Fragment currentFragment;
     FragmentManager fragmentManager;
     HomeFragment homeFragment = null;
     SettingsFragment settingsFragment = null;
@@ -112,7 +115,17 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
+            //Fragment fragmentBeforeBackPress = getCurrentFragment();
+            // Perform the usual back action
             super.onBackPressed();
+            Fragment fragmentAfterBackPress = getCurrentFragment();
+            if(fragmentAfterBackPress instanceof PrestationsSearchFragment){
+                fragmentManager.popBackStack();
+                changeFragment(Constants._FRAG_PRESTATION_SEARCH,null);
+            }
+
+
         }
     }
 
@@ -270,7 +283,6 @@ public class HomeActivity extends AppCompatActivity
                 frag = mapsFragment;
                 break;
             case Constants._FRAG_MAPS_SEARCH:
-
                     mapsSearchFragment =  MapsSearchFragment.newInstance(params);
                 frag = mapsSearchFragment;
                 break;
@@ -301,10 +313,20 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void loadFragment(Fragment fragment){
+        currentFragment = fragment;
+        int backStackCount =fragmentManager.getBackStackEntryCount();
+        String tag = "Frag"+backStackCount;
         fragmentManager.beginTransaction()
-                .replace(R.id.frtHome,fragment)
-                .addToBackStack(null)
+                .replace(R.id.frtHome,fragment,tag)
+                .addToBackStack(tag)
                 .commit();
+    }
+
+
+    private Fragment getCurrentFragment(){
+        String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+        Fragment currentFragment = fragmentManager.findFragmentByTag(fragmentTag);
+        return currentFragment;
     }
 
     private void loadIntent(Context ctx, Class dest, int code){

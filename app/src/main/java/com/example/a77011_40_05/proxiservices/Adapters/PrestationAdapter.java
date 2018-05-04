@@ -27,15 +27,16 @@ public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
 
     Prestations prestations;
     Context context;
-    Activity activity;
 
 
 
-    public PrestationAdapter(Prestations prestations, Context context, Activity activity) {
+    public PrestationAdapter(Prestations prestations, Context context) {
         this.prestations = prestations;
         this.context = context;
-        this.activity = activity;
+
     }
+
+
 
     @Override
     public PrestationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,7 +48,7 @@ public class PrestationAdapter extends RecyclerView.Adapter<PrestationHolder> {
     @Override
     public void onBindViewHolder(PrestationHolder holder, int position) {
         Prestation prestation = prestations.get(position);
-        holder.setPrestation(prestation,context,activity);
+        holder.setPrestation(prestation,context);
 
     }
 

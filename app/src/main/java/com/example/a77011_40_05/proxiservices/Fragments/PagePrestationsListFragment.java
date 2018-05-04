@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapter;
 import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.R;
-import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
 import com.google.gson.Gson;
 
@@ -26,24 +25,38 @@ public class PagePrestationsListFragment extends Fragment {
 
     int mode;
     Context context;
+    View corps;
     PrestationAdapter prestationAdapter;
     Prestations prestations;
     RecyclerView rvwPrestationsList;
-    Activity activity;
+
+
+    public PagePrestationsListFragment() {
+        // Required empty public constructor
+    }
 
     public static PagePrestationsListFragment newInstance(int mode) {
+        Log.e(Constants._TAG_LOG,"PagePrestationsListFragment newInstance");
+        Log.e(Constants._TAG_LOG,""+mode);
         Bundle args = new Bundle();
         args.putInt("mode", mode);
+
         PagePrestationsListFragment fragment = new PagePrestationsListFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page_prestations_list, container, false);
         mode = getArguments().getInt("mode");
+
+
+
+        Log.e(Constants._TAG_LOG,"PagePrestationsListFragment "+mode);
 
         rvwPrestationsList = view.findViewById(R.id.rvwPrestationsList);
 
@@ -52,16 +65,21 @@ public class PagePrestationsListFragment extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
         rvwPrestationsList.setLayoutManager(layoutManager);
         rvwPrestationsList.setItemAnimator(new DefaultItemAnimator());
-        prestationAdapter = new PrestationAdapter(prestations, context,getActivity());
+        prestationAdapter = new PrestationAdapter(prestations, context);
         rvwPrestationsList.setAdapter(prestationAdapter);
-
+        corps = view;
         return view;
     }
 
 
     public void refreshPrestationsList(Prestations newList) {
+        if(rvwPrestationsList==null)
+        {
+            View v = this.getView();
+            rvwPrestationsList = v.findViewById(R.id.rvwPrestationsList);
+        }
         this.prestations = newList;
-        prestationAdapter = new PrestationAdapter(prestations, context,getActivity());
+        prestationAdapter = new PrestationAdapter(prestations, context);
         rvwPrestationsList.setAdapter(prestationAdapter);
     }
 

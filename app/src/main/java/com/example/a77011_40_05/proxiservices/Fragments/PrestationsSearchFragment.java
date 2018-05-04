@@ -40,8 +40,7 @@ public class PrestationsSearchFragment extends Fragment {
     MyPagerAdapter myPagerAdapter;
     FragmentActivity fragmentActivity;
     App app;
-   Prestation prestation;
-
+    Prestation prestation;
     //FILTERS
     int idCategoryPrestation = -1;
 
@@ -84,6 +83,7 @@ public class PrestationsSearchFragment extends Fragment {
         //getSupportFragmentManager()));
         myPagerAdapter = new MyPagerAdapter(fragmentActivity.getSupportFragmentManager());
         viewPager.setAdapter(myPagerAdapter);
+
 
         // Bind the tabs to the ViewPager
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);

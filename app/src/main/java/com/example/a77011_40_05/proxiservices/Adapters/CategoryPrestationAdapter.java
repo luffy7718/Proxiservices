@@ -23,9 +23,6 @@ public class CategoryPrestationAdapter extends RecyclerView.Adapter<CategoryPres
     Context context;
     Activity activity;
 
-
-
-
     public CategoryPrestationAdapter(CategoriesPrestations categoriesPrestations, Context context, Activity activity) {
         this.categoriesPrestations = categoriesPrestations;
         this.context = context;

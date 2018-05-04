@@ -29,7 +29,7 @@ import com.google.gson.JsonObject;
 public class SearchFragment extends Fragment {
 
     Context context;
-Activity activity;
+    Activity activity;
     String search;
 
     RecyclerView rvwSearchUsers;
@@ -69,7 +69,7 @@ Activity activity;
                             Log.e(Constants._TAG_LOG,"Services: "+json.get("services"));
                             try{
                                 prestations = gson.fromJson(json.get("services"),Prestations.class);
-                                prestationAdapter = new PrestationAdapter(prestations,context,activity);
+                                prestationAdapter = new PrestationAdapter(prestations,context);
                                 rvwSearchServices.setAdapter(prestationAdapter);
                             }catch (Exception e){
                                 Log.e(Constants._TAG_LOG,"ERROR "+e.getMessage());
@@ -97,7 +97,7 @@ Activity activity;
     }
 
     private void refresh() {
-        prestationAdapter = new PrestationAdapter(prestations,context,activity);
+        prestationAdapter = new PrestationAdapter(prestations,context);
         rvwSearchServices.setAdapter(prestationAdapter);
     }
 
@@ -112,7 +112,7 @@ Activity activity;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         rvwSearchServices.setLayoutManager(layoutManager);
         rvwSearchServices.setItemAnimator(new DefaultItemAnimator());
-        prestationAdapter = new PrestationAdapter(prestations,context,activity);
+        prestationAdapter = new PrestationAdapter(prestations,context);
         rvwSearchServices.setAdapter(prestationAdapter);
 
         users = new Users();

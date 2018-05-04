@@ -59,7 +59,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     double latitudePrestations=0;
     double longitudePrestations=0;
     Location location;
-    Location locationPrestations;
     private Circle circle;
     Context context;
     MapView mapView;
@@ -67,7 +66,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     TextView radiusText;
     int MaxValue = 40;
     Spinner spinCategory;
-    MyPagerAdapter myPagerAdapter;
     //FILTERS
     int idCategoryPrestation = -1;
     private int min = 1;
@@ -75,7 +73,8 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     LatLng mycoordsPrestations;
     Button btnReturn;
     Activity activity;
-    private OnFragmentInteractionListener mListener;
+
+
     public MapsSearchFragment() {
         // Required empty public constructor
     }
@@ -109,11 +108,15 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_maps_search, container, false);
+
+        Log.e(Constants._TAG_LOG, "MapsSearchFragment");
 
         mapView = (MapView) view.findViewById(R.id.mapView);
         progressRadius = (AppCompatSeekBar) view.findViewById(R.id.progress);
@@ -182,11 +185,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     }
 
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @TargetApi(23)
     @Override
