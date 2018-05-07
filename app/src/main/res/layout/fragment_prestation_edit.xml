@@ -13,21 +13,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             style="@style/myButton"
             android:id="@+id/btnEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Modifier"/>
+            android:src="@drawable/ic_action_save"/>
 
-        <Button
+        <ImageButton
+            style="@style/myButton"
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_action_delete"/>
+
+        <ImageButton
             style="@style/myButton"
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Annuler"/>
+            android:src="@drawable/ic_action_cancel"/>
 
     </LinearLayout>
 
@@ -39,7 +47,7 @@
     <Spinner
         android:id="@+id/spinCategory"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:layout_height="40dp" />
 
     <EditText
         android:id="@+id/txtDescription"
@@ -51,7 +59,8 @@
         android:gravity="top|left"
         android:maxLines="10"
         android:scrollbars="vertical"
-        android:hint="Je recherche ..."/>
+        android:hint="Je recherche ..."
+        android:background="@drawable/border"/>
 
 
 </LinearLayout>

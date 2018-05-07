@@ -60,18 +60,40 @@
                 android:visibility="gone"
                 android:text="Mes Photos" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="15dp"
+                android:background="@color/colorPrimary"/>
+
             <com.example.a77011_40_05.proxiservices.CustomViews.SectionView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:headText="Mes demandes"
                 app:headIcon="@drawable/ic_action_collapse">
 
+                <TextView
+                    style="@style/ClickableTextView"
+                    android:id="@+id/txtAddRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ajouter une demande."/>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvwMyRequestsList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+
             </com.example.a77011_40_05.proxiservices.CustomViews.SectionView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="15dp"
+                android:background="@color/colorPrimary"/>
 
             <com.example.a77011_40_05.proxiservices.CustomViews.SectionView
                 android:layout_width="match_parent"
@@ -79,12 +101,27 @@
                 app:headText="Mes propositions"
                 app:headIcon="@drawable/ic_action_collapse">
 
+                <TextView
+                    style="@style/ClickableTextView"
+                    android:id="@+id/txtAddPropose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ajouter une proposition."/>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvwMyProposesList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+
             </com.example.a77011_40_05.proxiservices.CustomViews.SectionView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="15dp"
+                android:background="@color/colorPrimary"/>
 
         </LinearLayout>
     </ScrollView>

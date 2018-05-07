@@ -21,13 +21,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.a77011_40_05.proxiservices.Activities.HomeActivity;
+import com.example.a77011_40_05.proxiservices.Adapters.PrestationAdapterAccount;
 import com.example.a77011_40_05.proxiservices.Entities.CategoriesPrestations;
 import com.example.a77011_40_05.proxiservices.Entities.Prestation;
+import com.example.a77011_40_05.proxiservices.Entities.Prestations;
 import com.example.a77011_40_05.proxiservices.R;
 import com.example.a77011_40_05.proxiservices.Utils.App;
+import com.example.a77011_40_05.proxiservices.Utils.AsyncCallWS;
 import com.example.a77011_40_05.proxiservices.Utils.Constants;
+import com.example.a77011_40_05.proxiservices.Utils.GenericAlertDialog;
+import com.example.a77011_40_05.proxiservices.Utils.Session;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -37,6 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +57,19 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
 
     private GoogleMap mMap;
 
+    //SETTINGS
     private Prestation prestation;
     private App app;
+    private boolean isNew;
+    private boolean isRequest;
+
 
     //VIEWS
     Spinner spinCategory;
     EditText txtDescription;
-    Button btnEdit;
-    Button btnCancel;
+    ImageButton btnEdit;
+    ImageButton btnCancel;
+    ImageButton btnDelete;
 
 
     //MAPS
@@ -94,15 +108,24 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
                 String json = getArguments().getString("prestation");
                 //Log.e(Constants._TAG_LOG,"Prestation Edit: "+json);
                 prestation = gson.fromJson(json ,Prestation.class);
+                isNew = false;
+            }else if(getArguments().containsKey("isRequest")){
+                isNew = true;
+                prestation = new Prestation();
+                isRequest =getArguments().getBoolean("isRequest");
             }
+        }else{
+            isNew = true;
+            prestation = new Prestation();
+            isRequest = true;
         }
-
+        context = getActivity();
         app = (App) getActivity().getApplication();
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_prestation_edit, container, false);
@@ -110,27 +133,66 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
         spinCategory = view.findViewById(R.id.spinCategory);
         txtDescription = view.findViewById(R.id.txtDescription);
         btnEdit = view.findViewById(R.id.btnEdit);
+        btnDelete = view.findViewById(R.id.btnDelete);
         btnCancel = view.findViewById(R.id.btnCancel);
-
         spinCategory = (Spinner) view.findViewById(R.id.spinCategory);
 
+
+        //Alimentation du spinner
         List<String> categories=new ArrayList<>();
         CategoriesPrestations cps = App.getCategoriesPrestations();
         for(int i= 0;i<cps.size();i++){
             categories.add(cps.get(i).getName());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,categories);
-
-        // Drop down style will be listview with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-
-        // attaching data adapter to spinner
         spinCategory.setAdapter(dataAdapter);
 
-        if(prestation != null){
+
+        //Switch entre Add et Edit
+        if(!isNew){
             txtDescription.setText(prestation.getDescription());
             spinCategory.setSelection(prestation.getIdCategoryPrestation()-1);
+        }else{
+            btnDelete.setVisibility(View.GONE);
+            if(isRequest){
+                txtDescription.setHint("Je recherche ...");
+            }else{
+                txtDescription.setHint("Je propose ...");
+            }
         }
+
+
+        //Button
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNew){
+                    addPrestation();
+                }else{
+                    editPrestation();
+                }
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GenericAlertDialog((HomeActivity) context, "Supprimer ?", null, new GenericAlertDialog.CallGenericAlertDialog() {
+                    @Override
+                    public void onValidate() {
+                        removePrersation();
+                    }
+                });
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity) context).onBackPressed();
+            }
+        });
 
         mapView=(MapView)view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -150,32 +212,6 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
             mListener.onFragmentInteraction(uri);
         }
     }
-
-    @TargetApi(23)
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        this.context = context;
-
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-        {
-            this.context = activity.getBaseContext();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -209,13 +245,13 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
                 }
             }
 
-            if(prestation != null){
+            if(!isNew){
                 latitude = prestation.getLatitude();
                 longitude = prestation.getLongitude();
             }
 
             position = new LatLng(latitude, longitude);
-            mMap.addMarker(new MarkerOptions().position(position).title("Coucou, Je suis Ici"));
+            mMap.addMarker(new MarkerOptions().position(position).title(""));
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));//min:2, max:21
@@ -246,7 +282,7 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
         mMap.clear();//effacer les marqueurs précédents
 
         LatLng mycoords = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis Ici"));
+        mMap.addMarker(new MarkerOptions().position(mycoords).title(""));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mycoords, 20));//min:2, max:21
         marker.setPosition(mycoords);
@@ -272,5 +308,108 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
         void onFragmentInteraction(Uri uri);
     }
 
+    private void addPrestation(){
+        AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "addPrestation.php", new AsyncCallWS.OnCallBackAsyncTask() {
+            @Override
+            public void onResultCallBack(String result) {
+                Log.e(Constants._TAG_LOG, "addPresation: "+result);
+                if(!result.isEmpty()){
+                    Gson gson = new Gson();
+                    JsonObject json = gson.fromJson(result,JsonObject.class);
+                    if(json.has("status")){
+                        Log.e(Constants._TAG_LOG,"Has status: "+json.get("status"));
+                        if(json.get("status").getAsString().equals("SUCCESS")){
+                            Toast.makeText(context,"Enregisté !",Toast.LENGTH_LONG).show();
+                            ((HomeActivity) context).onBackPressed();
+                        }else{
+                            String msg = json.get("msg").getAsString();
+                            Toast.makeText(context,"ERREUR: "+msg,Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        });
+        /*Log.e(Constants._TAG_LOG, "idCategoryPrestation: "+""+(spinCategory.getSelectedItemPosition()+1));
+        Log.e(Constants._TAG_LOG, "idUser: "+""+ Session.getMyUser().getIdUser());
+        Log.e(Constants._TAG_LOG, "description: "+txtDescription.getText().toString());
+        Log.e(Constants._TAG_LOG, "latitude: "+""+ position.latitude);
+        Log.e(Constants._TAG_LOG, "longitude: "+""+ position.longitude);*/
+        asyncCallWS.addParam("idCategoryPrestation",""+ (spinCategory.getSelectedItemPosition()+1));
+        asyncCallWS.addParam("idUser",""+ Session.getMyUser().getIdUser());
+        asyncCallWS.addParam("description",txtDescription.getText().toString());
+        asyncCallWS.addParam("latitude",""+ position.latitude);
+        asyncCallWS.addParam("longitude",""+ position.longitude);
+        if(isRequest){
+            asyncCallWS.addParam("isRequest",""+1);
+        }else{
+            asyncCallWS.addParam("isRequest",""+0);
+        }
+
+        asyncCallWS.execute();
+    }
+
+    private void editPrestation(){
+        AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "editPrestation.php", new AsyncCallWS.OnCallBackAsyncTask() {
+            @Override
+            public void onResultCallBack(String result) {
+                Log.e(Constants._TAG_LOG, "editPresation: "+result);
+                if(!result.isEmpty()){
+                    Gson gson = new Gson();
+                    JsonObject json = gson.fromJson(result,JsonObject.class);
+                    if(json.has("status")){
+                        Log.e(Constants._TAG_LOG,"Has status: "+json.get("status"));
+                        if(json.get("status").getAsString().equals("SUCCESS")){
+                            Toast.makeText(context,"Enregisté !",Toast.LENGTH_LONG).show();
+                            ((HomeActivity) context).onBackPressed();
+                        }else{
+                            String msg = json.get("msg").getAsString();
+                            Toast.makeText(context,"ERREUR: "+msg,Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        });
+        /*Log.e(Constants._TAG_LOG, "idPrestation: "+""+ prestation.getIdPrestation());
+        Log.e(Constants._TAG_LOG, "idCategoryPrestation: "+""+(spinCategory.getSelectedItemPosition()+1));
+        Log.e(Constants._TAG_LOG, "idUser: "+""+ Session.getMyUser().getIdUser());
+        Log.e(Constants._TAG_LOG, "description: "+txtDescription.getText().toString());
+        Log.e(Constants._TAG_LOG, "latitude: "+""+ position.latitude);
+        Log.e(Constants._TAG_LOG, "longitude: "+""+ position.longitude);*/
+        asyncCallWS.addParam("idPrestation",""+ prestation.getIdPrestation());
+        asyncCallWS.addParam("idCategoryPrestation",""+ (spinCategory.getSelectedItemPosition()+1));
+        asyncCallWS.addParam("idUser",""+ Session.getMyUser().getIdUser());
+        asyncCallWS.addParam("description",txtDescription.getText().toString());
+        asyncCallWS.addParam("latitude",""+ position.latitude);
+        asyncCallWS.addParam("longitude",""+ position.longitude);
+
+        asyncCallWS.execute();
+    }
+
+    private void removePrersation(){
+        AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "removePrestation.php", new AsyncCallWS.OnCallBackAsyncTask() {
+            @Override
+            public void onResultCallBack(String result) {
+                Log.e(Constants._TAG_LOG, "editPresation: "+result);
+                if(!result.isEmpty()){
+                    Gson gson = new Gson();
+                    JsonObject json = gson.fromJson(result,JsonObject.class);
+                    if(json.has("status")){
+                        Log.e(Constants._TAG_LOG,"Has status: "+json.get("status"));
+                        if(json.get("status").getAsString().equals("SUCCESS")){
+                            Toast.makeText(context,"Supprimé !",Toast.LENGTH_LONG).show();
+                            ((HomeActivity) context).onBackPressed();
+                        }else{
+                            String msg = json.get("msg").getAsString();
+                            Toast.makeText(context,"ERREUR: "+msg,Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        });
+        //Log.e(Constants._TAG_LOG, "idPrestation: "+""+ prestation.getIdPrestation());
+        asyncCallWS.addParam("idPrestation",""+ prestation.getIdPrestation());
+
+        asyncCallWS.execute();
+    }
 
 }

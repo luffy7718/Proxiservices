@@ -48,6 +48,9 @@ public class AccountFragment extends Fragment {
     RecyclerView rvwMyRequestsList;
     RecyclerView rvwMyProposesList;
 
+    TextView txtAddRequest;
+    TextView txtAddPropose;
+
 
 
     public AccountFragment() {
@@ -77,6 +80,8 @@ public class AccountFragment extends Fragment {
 
         rvwMyRequestsList = view.findViewById(R.id.rvwMyRequestsList);
         rvwMyProposesList = view.findViewById(R.id.rvwMyProposesList);
+        txtAddRequest = view.findViewById(R.id.txtAddRequest);
+        txtAddPropose = view.findViewById(R.id.txtAddPropose);
         Button btnProfilPics = view.findViewById(R.id.btnProfilPics);
         Button btnGallery = view.findViewById(R.id.btnGallery);
         ImageView imgProfil = view.findViewById(R.id.imgProfil);
@@ -101,6 +106,26 @@ public class AccountFragment extends Fragment {
             public void onClick(View view) {
                 HomeActivity home = (HomeActivity) getActivity();
                 home.changeFragment(_FRAG_ACCOUNT_GALLERY,null);
+            }
+        });
+
+        txtAddRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle params = new Bundle();
+                params.putBoolean("isRequest",true);
+                HomeActivity home = (HomeActivity) context;
+                home.changeFragment(Constants._FRAG_PRESTATION_EDIT,params);
+            }
+        });
+
+        txtAddPropose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle params = new Bundle();
+                params.putBoolean("isRequest",false);
+                HomeActivity home = (HomeActivity) context;
+                home.changeFragment(Constants._FRAG_PRESTATION_EDIT,params);
             }
         });
 
