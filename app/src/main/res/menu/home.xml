@@ -7,23 +7,4 @@
         android:title="Search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
-    <item
-        android:id="@+id/action_maps"
-        android:icon="@drawable/ic_action_carte"
-        android:title="Quartier"
-        app:showAsAction="always" ></item>
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="never" ></item>
-    <item
-        android:id="@+id/action_AddCarte"
-        android:icon="@drawable/ic_action_routemaps"
-        android:title="TraceRoute"
-        app:showAsAction="always" ></item>
-    <item
-        android:id="@+id/action_SearchCarte"
-        android:icon="@drawable/search_location"
-        android:title="Search"
-        app:showAsAction="always" ></item>
 </menu>

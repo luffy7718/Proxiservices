@@ -12,29 +12,17 @@
                 android:id="@+id/nav_account"
                 android:icon="@drawable/ic_menu_account"
                 android:title="Mon Compte" />
-            <item
-                android:id="@+id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="Gallery" />
-            <item
-                android:id="@+id/nav_slideshow"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Slideshow" />
-            <item
-                android:id="@+id/nav_manage"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Tools" />
     </item>
-    <item android:title="Communicate">
+    <item android:title="Cartes">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_maps_route"
+                android:icon="@drawable/ic_menu_maps_route"
+                android:title="Naviguer" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_maps_search"
+                android:icon="@drawable/ic_menu_maps_search"
+                android:title="Autour de moi" />
         </menu>
     </item>
 

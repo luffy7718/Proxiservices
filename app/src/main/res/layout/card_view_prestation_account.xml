@@ -28,11 +28,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
             android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/txtName"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -41,9 +43,14 @@
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="5dp"
                 android:text="TextView"
-                android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textColor="@android:color/black"
+                android:textSize="15dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:singleLine="false" />
 
 
         </LinearLayout>

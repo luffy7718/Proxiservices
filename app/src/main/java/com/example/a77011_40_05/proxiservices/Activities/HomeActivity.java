@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity
     //Fragments
     Fragment currentFragment;
     FragmentManager fragmentManager;
-    HomeFragment homeFragment = null;
+    /*HomeFragment homeFragment = null;
     SettingsFragment settingsFragment = null;
     AccountFragment accountFragment = null;
     AccountProfilePicsFragment accountProfilePicsFragment = null;
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity
     MapsSearchFragment mapsSearchFragment =null;
     PrestationsSearchFragment prestationsSearchFragment =null;
     SearchFragment searchFragment = null;
-    PrestationEditFragment prestationEditFragment = null;
+    PrestationEditFragment prestationEditFragment = null;*/
 
 
 
@@ -165,24 +165,10 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             changeFragment(Constants._FRAG_SETTINGS,null);
 
-        }
-        else if(id == R.id.action_AddCarte)
-        {
-            changeFragment(Constants._FRAG_MAPS_ADD,null);
-        }
-        else if(id == R.id.action_SearchCarte)
-        {
-            changeFragment(Constants._FRAG_MAPS_SEARCH,null);
-        }
-        else if(id == R.id.action_maps)
-        {
-            changeFragment(Constants._FRAG_MAPS,null);
-        }
-
-
+        }*/
         return true;
     }
 
@@ -193,12 +179,7 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home){
-            int end = fragmentManager.getBackStackEntryCount();
-            for (int i = 0; i<=end;i++){
-                Log.e(Constants._TAG_LOG,i+"/"+end);
-                fragmentManager.popBackStackImmediate();
-            }
-            Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
+            clearFragments();
             changeFragment(Constants._FRAG_HOME,null);
         } else if (id == R.id.nav_account) {
             // Handle the camera action
@@ -208,16 +189,10 @@ public class HomeActivity extends AppCompatActivity
                 loadIntent(context,LoginActivity.class,Constants._CODE_LOGIN);
             }
 
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if(id == R.id.nav_maps_route){
+            changeFragment(Constants._FRAG_MAPS_ADD, null);
+        }else if(id == R.id.nav_maps_search){
+            changeFragment(Constants._FRAG_MAPS_SEARCH,null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -256,62 +231,37 @@ public class HomeActivity extends AppCompatActivity
         Fragment frag = null;
         switch (code){
             case Constants._FRAG_HOME:
-                if(homeFragment == null){
-                    homeFragment = new HomeFragment();
-                }
-                frag = homeFragment;
+                frag = new HomeFragment();
                 break;
             case Constants._FRAG_SETTINGS:
-                if(settingsFragment== null){
-                    settingsFragment= new SettingsFragment();
-                }
-                frag = settingsFragment;
+                frag = new SettingsFragment();
                 break;
             case Constants._FRAG_ACCOUNT:
-                accountFragment = new AccountFragment();
-
-                frag = accountFragment;
+                frag = new AccountFragment();
                 break;
             case Constants._FRAG_ACCOUNT_PROFILE_PICS:
-                if(accountProfilePicsFragment == null){
-                    accountProfilePicsFragment = new AccountProfilePicsFragment();
-                }
-                frag = accountProfilePicsFragment;
+                frag = new AccountProfilePicsFragment();
                 break;
             case Constants._FRAG_ACCOUNT_GALLERY:
-                if(accountGalleryFragment == null){
-                    accountGalleryFragment = new AccountGalleryFragment();
-                }
-                frag = accountGalleryFragment;
+                frag = new AccountGalleryFragment();
                 break;
             case Constants._FRAG_MAPS:
-                if(mapsFragment == null){
-                    mapsFragment = new MapsFragment();
-                }
-                frag = mapsFragment;
+                frag = new MapsFragment();
                 break;
             case Constants._FRAG_MAPS_SEARCH:
-                    mapsSearchFragment =  MapsSearchFragment.newInstance(params);
-                frag = mapsSearchFragment;
+                frag =  MapsSearchFragment.newInstance(params);
                 break;
-
             case Constants._FRAG_PRESTATION_SEARCH:
-                prestationsSearchFragment = PrestationsSearchFragment.newInstance(params);
-                frag = prestationsSearchFragment;
+                frag = PrestationsSearchFragment.newInstance(params);
                 break;
             case Constants._FRAG_MAPS_ADD:
-                if(mapsAddFragment == null){
-                    mapsAddFragment = new MapsAddFragment();
-                }
-                frag = mapsAddFragment;
+                frag = new MapsAddFragment();
                 break;
             case Constants._FRAG_SEARCH_TEXT:
-                searchFragment = SearchFragment.newInstance(params);
-                frag = searchFragment;
+                frag = SearchFragment.newInstance(params);
                 break;
             case Constants._FRAG_PRESTATION_EDIT:
-                prestationEditFragment = PrestationEditFragment.newInstance(params);
-                frag = prestationEditFragment;
+                frag = PrestationEditFragment.newInstance(params);
                 break;
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);
@@ -333,6 +283,15 @@ public class HomeActivity extends AppCompatActivity
                 .replace(R.id.frtHome,fragment,tag)
                 .addToBackStack(tag)
                 .commit();
+    }
+
+    private void clearFragments(){
+        int end = fragmentManager.getBackStackEntryCount();
+        for (int i = 0; i<=end;i++){
+            //Log.e(Constants._TAG_LOG,i+"/"+end);
+            fragmentManager.popBackStackImmediate();
+        }
+        //Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
     }
 
 

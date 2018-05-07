@@ -312,7 +312,7 @@ public class PrestationEditFragment extends Fragment implements OnMapReadyCallba
         AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE + "addPrestation.php", new AsyncCallWS.OnCallBackAsyncTask() {
             @Override
             public void onResultCallBack(String result) {
-                Log.e(Constants._TAG_LOG, "addPresation: "+result);
+                Log.e(Constants._TAG_LOG, "addPrestation: "+result);
                 if(!result.isEmpty()){
                     Gson gson = new Gson();
                     JsonObject json = gson.fromJson(result,JsonObject.class);

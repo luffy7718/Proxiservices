@@ -93,19 +93,13 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         if (getArguments() != null) {
             if (getArguments().containsKey("latitude") && getArguments().containsKey("longitude")) {
-
                 latitudePrestations = getArguments().getDouble("latitude");
                 longitudePrestations = getArguments().getDouble("longitude");
-
-
             }
-
         }
-
+        context = getActivity();
     }
 
 
@@ -136,7 +130,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
         for (int i = 0; i < cps.size(); i++) {
             categories.add(cps.get(i).getName());
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, android.R.layout
                 .simple_spinner_item, categories);
 
         // Drop down style will be listview with radio button
@@ -208,7 +202,7 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
             Maps.setMyLocationEnabled(true);
 
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService
+            LocationManager locationManager = (LocationManager) context.getSystemService
                     (LOCATION_SERVICE);
 
             // todo: à partir de l'api 23

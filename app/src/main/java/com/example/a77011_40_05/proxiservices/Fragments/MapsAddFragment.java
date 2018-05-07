@@ -89,7 +89,7 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        context = getActivity();
     }
 
     @Override
@@ -226,7 +226,7 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
 
             Maps.setMyLocationEnabled(true);
 
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
             // todo: à partir de l'api 23
             //LocationManager locationManager = (LocationManager)getContext().getSystemService(LOCATION_SERVICE);
