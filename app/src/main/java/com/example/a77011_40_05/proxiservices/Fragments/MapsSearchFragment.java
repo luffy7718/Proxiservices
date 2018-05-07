@@ -222,7 +222,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
                 locationType = LocationManager.NETWORK_PROVIDER;
             else locationType = LocationManager.PASSIVE_PROVIDER;
-
             if (!locationType.isEmpty()) {
                 Log.e(Constants._TAG_LOG, "locationType: " + locationType);
                 // locationManager.requestLocationUpdates(locationType, MIN_TIME_UPDATES,
@@ -250,18 +249,20 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
             circle = Maps.addCircle(co.center(mycoords).radius(1000).fillColor(0x66aaaFFF));
             //ajout du marqueur
             Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis Ici"));
-            Maps.addMarker(new MarkerOptions().position(mycoordsPrestations).title("Coucou, la " +
-                    "prestation est ici"));
+            Maps.addMarker(new MarkerOptions().position(mycoordsPrestations).title("Coucou, la prestation est ici"));
             //mouvement de la caméra en fonction du lvl de zoom
             Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     co.getCenter(), getZoomLevel(circle)));
+
 
             //utilisation du seekbar rayon
             progressRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
                 public void onProgressChanged(SeekBar seekBar, int progressRadius, boolean
                         fromUser) {
+
                     progressRadius++;
+
                     //changer le cercle grace au seekbar rayon
                     circle.setRadius(progressRadius);
 
@@ -270,21 +271,24 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
                     radiusText.setText(String.valueOf((progressRadius)) + "Km");
                     //nettoyer la maps
                     Maps.clear();
-                    Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis " +
-                            "Ici"));
+                    Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, Je suis Ici"));
+                    Maps.addMarker(new MarkerOptions().position(mycoordsPrestations).title("Coucou, la prestation est ici"));
 
                     final CircleOptions circleoptions = new CircleOptions();
 
 
                     if (progressRadius > 1) {
 
-                        circle = Maps.addCircle(circleoptions
-                                .center(mycoords)
-                                .radius((progressRadius + 2) * 500)
-                                .strokeWidth(0)
-                                .fillColor(0x66aaaFFF));
-                        Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
-                                (), getZoomLevel(circle)));
+
+
+                            circle = Maps.addCircle(circleoptions
+                                    .center(mycoords)
+                                    .radius(progressRadius *1000)// exemple:2*1000=2000m=2km
+                                    .strokeWidth(1)
+                                    .fillColor(0x66aaaFFF));
+                            Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
+
+                                    (), getZoomLevel(circle)));
 
                     }
                     if (progressRadius == 1) {
@@ -300,18 +304,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
                     }
                 }
 
-
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        //Handle search key click
-                        return true;
-                    }
-                    if (actionId == EditorInfo.IME_ACTION_GO) {
-                        //Handle go key click
-                        return true;
-                    }
-                    return false;
-                }
 
                 @Override
                 public void onStartTrackingTouch(final SeekBar seekBar) {
@@ -353,8 +345,6 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
     @Override
     public void onLocationChanged(Location location) {
 
-        Maps.addMarker(new MarkerOptions().position(mycoords).title("Coucou, la prestation se " +
-                "trouve ici"));
     }
 
     @Override

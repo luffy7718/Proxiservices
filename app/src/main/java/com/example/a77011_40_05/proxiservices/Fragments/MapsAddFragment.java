@@ -248,11 +248,11 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
                 }
             }
 
-            LatLng paris = new LatLng(latitude, longitude);
-            Maps.addMarker(new MarkerOptions().position(paris).title("Coucou, Je suis Ici"));
+            mycoords = new LatLng(latitude, longitude);
+            Maps.addMarker(new MarkerOptions().position(mycoords).title("Depart:"+latitude+" : "+longitude));
 
-            Maps.moveCamera(CameraUpdateFactory.newLatLng(paris));
-            Maps.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15));//min:2, max:21
+            Maps.moveCamera(CameraUpdateFactory.newLatLng(mycoords));
+            Maps.moveCamera(CameraUpdateFactory.newLatLngZoom(mycoords, 15));//min:2, max:21
 
             mycoords = new LatLng(location.getLatitude(), location.getLongitude());
             // Setting a click event handler for the map
@@ -264,10 +264,6 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
                     if(isFrom)
                     {
                         latLngfrom=mycoords;
-
-                        //Maps.addMarker(new MarkerOptions().position(mycoords).title("Depart:"+latLng.latitude+" : "+latLng.longitude));
-
-
                         isFrom=false;
                     }
                     else

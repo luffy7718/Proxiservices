@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         loadCategoriesPrestations();
         App.loadErreur(context);
 
-       /*if(App.erreurs.size() > 0 && Functions.isConnectionAvailable(context))
+        //gestions erreurs à ajouter???
+       /*if(Functions.isConnectionAvailable(context))
         {
             for(Erreur erreur:App.erreurs)
             {
@@ -44,10 +45,8 @@ public class MainActivity extends AppCompatActivity {
             }
             App.deleteErreur(context);
         }*/
-
-
-
-        //testErreur2();
+        testErreur();
+        testErreur2();
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             final String SOME_ACTION = "android.net.com.CONNECTIVITY_CHANGE";
