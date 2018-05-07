@@ -231,13 +231,11 @@ public class MapsAddFragment extends Fragment implements OnMapReadyCallback, Loc
             // todo: à partir de l'api 23
             //LocationManager locationManager = (LocationManager)getContext().getSystemService(LOCATION_SERVICE);
             String locationType = "";
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
                 locationType = LocationManager.GPS_PROVIDER;
-            }else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
                 locationType = LocationManager.NETWORK_PROVIDER;
-            }else{
-                locationType = LocationManager.PASSIVE_PROVIDER;
-            }
+            else locationType = LocationManager.PASSIVE_PROVIDER;
 
             if (!locationType.isEmpty()) {
                 // locationManager.requestLocationUpdates(locationType, MIN_TIME_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);

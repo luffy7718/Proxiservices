@@ -281,14 +281,14 @@ public class MapsSearchFragment extends Fragment implements OnMapReadyCallback, 
 
 
 
-                            circle = Maps.addCircle(circleoptions
-                                    .center(mycoords)
-                                    .radius(progressRadius *1000)// exemple:2*1000=2000m=2km
-                                    .strokeWidth(1)
-                                    .fillColor(0x66aaaFFF));
-                            Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
+                        circle = Maps.addCircle(circleoptions
+                                .center(mycoords)
+                                .radius(progressRadius *1000)// exemple:2*1000=2000m=2km
+                                .strokeWidth(1)
+                                .fillColor(0x66aaaFFF));
+                        Maps.animateCamera(CameraUpdateFactory.newLatLngZoom(circleoptions.getCenter
 
-                                    (), getZoomLevel(circle)));
+                                (), getZoomLevel(circle)));
 
                     }
                     if (progressRadius == 1) {
